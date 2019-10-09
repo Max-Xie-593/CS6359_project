@@ -23,4 +23,4 @@ The person's id will not be in the system.
 The person has not signed in before, so the system will ask the person what their name is and add their unique id to the system as a Student.
 The system will say Welcome to the Student page <student_name>!
 The person reads a message that they have successfully signed in.
-Exceptions: If the person enters an invalid id, the system will inform the person they entered the invalid id.
+jfkjfkdjExceptions: If the person enters an invalid id, the system will inform the person they entered the invalid id.
