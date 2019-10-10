@@ -1,10 +1,17 @@
 **Name:** Sign In
+
 **Description:** The app needs to be able to sign in administrators, tutors and students to the system using their unique IDs.
+
 **Actors:** Administrators, Tutors, Students
+
 **TUCBW:** A person enters their unique id.
+
 **TUCEW:** A person reads a message that they have successfully signed in.
+
 **Preconditions:** If the person has never signed in before, they are a student. The original administrator is set by the system creators, any additional admins are added by the admins. Mentors get added by the admins as well.
+
 **Postconditions:** Person will be signed into the system.
+
 **Main Course:** 
 1. The person will enter their unique id.
 2. The system will ask the person if they want to sign-in or check-in.
