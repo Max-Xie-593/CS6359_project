@@ -63,7 +63,6 @@ class MainActivity : AppCompatActivity() {
 
             if(intent != null && currUserLevel != USER_DOES_NOT_EXIST) {
                 intent.putExtra("name", currUserName)
-                intent.putExtra("id", id)
                 startActivity(intent)
             }
             else if(intent != null){
