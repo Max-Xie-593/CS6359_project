@@ -4,7 +4,9 @@
 
 **Actors**: Tutors
 
-**Related to**: Issue #1 
+**Blocked by:** Use Case #1
+
+**Related to:** Use Case #3
 
 **TUCBW**: A tutor clicks the check-in button.
 
