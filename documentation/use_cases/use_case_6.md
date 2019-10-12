@@ -2,6 +2,8 @@
 
 **Description:** Students should be able to check-in and be added to a queue when there is not a tutor available.
 
+**Type:** User-level
+
 **Actors:** Student, Tutor
 
 **Blocked by:** Use Case #1

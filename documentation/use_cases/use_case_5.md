@@ -2,6 +2,8 @@
 
 **Description:** Admin should be able to modify the list of tutors by add/delete/edit.
 
+**Type:** User-level
+
 **Actors:** Admin, Tutors
 
 **Blocked by:** Use Case #1

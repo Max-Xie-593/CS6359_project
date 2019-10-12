@@ -2,6 +2,8 @@
 
 **Description**: Tutors should be able to check-out.
 
+**Type:** User-level
+
 **Actors**: Tutors
 
 **Blocked by:** Use Case #1

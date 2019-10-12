@@ -2,6 +2,8 @@
 
 **Description:** Students should be able to check-in and be matched with a tutor when there is a tutor available.
 
+**Type:** User-level
+
 **Actors:** Student, Tutor
 
 **Blocked by:** Use Case #1

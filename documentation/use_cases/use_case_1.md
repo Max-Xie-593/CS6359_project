@@ -2,6 +2,8 @@
 
 **Description:** The app needs to be able to sign in administrators, tutors and students to the system using their unique IDs.
 
+**Type:** User-level
+
 **Actors:** Administrators, Tutors, Students
 
 **TUCBW:** A person enters their unique id.
