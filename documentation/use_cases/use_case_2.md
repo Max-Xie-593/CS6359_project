@@ -1,4 +1,4 @@
-**NAME**: Tutor Check-in
+**Name**: Tutor Check-in
 
 **Description**: Tutors should be able to check-in.
 
