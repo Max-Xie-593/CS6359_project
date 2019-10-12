@@ -4,6 +4,10 @@
 
 **Actors:** Student, Tutor
 
+**Blocked by:** Use Case #1
+
+**Related to:** Use Case #6
+
 **TUCBW:** A student clicks the check in option.
 
 **TUCEW:** The student is notified that they are matched with a tutor <Tutor.Name>.
