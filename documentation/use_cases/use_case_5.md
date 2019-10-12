@@ -4,6 +4,8 @@
 
 **Actors:** Admin, Tutors
 
+**Blocked by:** Use Case #1
+
 **TUCBW:** Admin selects an “edit tutors” button (or something of that nature)
 
 **TUCEW:** Admin sees changes reflected in the list of tutors.
