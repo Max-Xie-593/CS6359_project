@@ -17,9 +17,11 @@
 2. The system will ask the person if they want to sign-in or check-in.
 3. The person selects the sign-in option.
 4. The person has signed in before, so the person's unique id will be checked to see if they are an admin, tutor, or student.
-  4a. If the person's unique id corresponds to an administrator, the system will say Welcome to the Admin page <admin_name>!
-  4b. If the person's unique id corresponds to an tutor, the system will say Welcome to the Tutor page <tutor_name>! 
-  4c. If the person's unique id corresponds to an student, the system will say Welcome to the Student page <student_name>!
+
+		4a. If the person's unique id corresponds to an administrator, the system will say Welcome to the Admin page <admin_name>!
+		4b. If the person's unique id corresponds to an tutor, the system will say Welcome to the Tutor page <tutor_name>!
+		4c. If the person's unique id corresponds to an student, the system will say Welcome to the Student page <student_name>!
+    
 5. The person reads a message that they have successfully signed in.
 
 **Alternate Course:**
