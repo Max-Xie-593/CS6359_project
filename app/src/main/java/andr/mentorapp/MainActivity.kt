@@ -63,6 +63,7 @@ class MainActivity : AppCompatActivity() {
 
             if(intent != null && currUserLevel != USER_DOES_NOT_EXIST) {
                 intent.putExtra("name", currUserName)
+                intent.putExtra("id", id)
                 startActivity(intent)
             }
             else if(intent != null){
@@ -120,5 +121,3 @@ fun addAdmin(id: String, name : String){
     userLevel.put(id, ADMIN_LEVEL)
     userName.put(id, name)
 }
-
-
