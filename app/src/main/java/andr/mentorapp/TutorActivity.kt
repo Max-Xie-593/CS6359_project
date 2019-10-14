@@ -16,7 +16,7 @@ class TutorActivity : AppCompatActivity() {
         setContentView(R.layout.activity_tutor)
 
         var textView = findViewById(R.id.tutorMessage) as TextView
-        textView.setText("Welcome to the Tutor page BLAH " + intent.getStringExtra("name") + "!")
+        textView.setText("Welcome to the Tutor page " + intent.getStringExtra("name") + "!")
 
         var checkInButton = findViewById(R.id.check_in_button) as Button
         var checkOutButton = findViewById(R.id.check_out_button) as Button
