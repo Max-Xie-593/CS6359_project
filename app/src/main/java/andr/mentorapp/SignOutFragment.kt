@@ -19,9 +19,9 @@ class SignOutFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        var v = inflater.inflate(R.layout.sign_out_fragment, container, false)
+        var v = inflater.inflate(R.layout.fragment_sign_out, container, false)
         var button = v.findViewById<View>(R.id.sign_out_button)
-        
+
         button.setOnClickListener {
             var intent = Intent(v.context, MainActivity::class.java)
             intent.setAction(ACTION_SIGN_OUT)
