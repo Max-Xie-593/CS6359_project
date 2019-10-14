@@ -1,10 +1,8 @@
 package andr.mentorapp
 
 import org.junit.After
-import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 
 /**
  * Example local unit test, which will execute on the development machine (host).

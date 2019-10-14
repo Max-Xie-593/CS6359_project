@@ -12,6 +12,7 @@ const val ACTION_SIGN_IN_STUDENT = "andr.mentorapp.SIGNINSTUDENT"
 const val ACTION_SIGN_IN_ADMIN = "andr.mentorapp.SIGNINADMIN"
 const val ACTION_SIGN_IN_TUTOR = "andr.mentorapp.SIGNINTUTOR"
 const val ACTION_CREATE_NEW_PROFILE = "andr.mentorapp.CREATENEWPROFILE"
+const val ACTION_SIGN_OUT = "andr.mentorapp.SIGNOUT"
 
 const val USER_DOES_NOT_EXIST : Int = -1
 const val STUDENT_LEVEL : Int = 0

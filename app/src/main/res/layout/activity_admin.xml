@@ -7,6 +7,12 @@
         android:layout_height="match_parent"
         tools:context=".AdminActivity">
 
+    <fragment
+            android:id="@+id/sign_out_fragment"
+            class="andr.mentorapp.SignOutFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
     <TextView
             android:id="@+id/adminMessage"
             android:layout_width="wrap_content"

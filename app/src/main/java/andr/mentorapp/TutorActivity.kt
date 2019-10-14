@@ -20,7 +20,14 @@ class TutorActivity : AppCompatActivity() {
 
         var checkInButton = findViewById(R.id.check_in_button) as Button
         var checkOutButton = findViewById(R.id.check_out_button) as Button
-        checkOutButton.setVisibility(View.GONE)
+
+        if (checkedInTutors.contains(intent.getStringExtra("id"))) {
+            checkOutButton.setVisibility(View.VISIBLE)
+            checkInButton.setVisibility(View.GONE)
+        } else {
+            checkInButton.setVisibility(View.VISIBLE)
+            checkOutButton.setVisibility(View.GONE)
+        }
 
         checkInButton.setOnClickListener {
             this.checkInTutor(intent.getStringExtra("id"))
