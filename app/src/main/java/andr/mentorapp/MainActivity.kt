@@ -3,9 +3,8 @@ package andr.mentorapp
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -23,23 +22,18 @@ const val ADMIN_LEVEL : Int = 2
 
 const val GET_NEW_USER_NAME_RESULT : Int = 0
 
-var currNewUser : String = ""
-
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
-        var editUniqueId = findViewById(R.id.unique_id_input) as EditText
-        val signInButton = findViewById(R.id.sign_in_button) as Button
         val db = MentorAppDatabase(this)
 
-        signInButton.setOnClickListener {
+        sign_in_button.setOnClickListener {
             val context  = this
             GlobalScope.launch {
-                val id = editUniqueId.text.toString()
+                val id = unique_id_input.text.toString()
                 val user = db.userDao().findUserById(id)
                 val currUserLevel : Int = user?.userLevel ?: USER_DOES_NOT_EXIST
                 val currUserName : String = user?.userName ?: ""
@@ -58,7 +52,6 @@ class MainActivity : AppCompatActivity() {
                         intent.setAction(ACTION_SIGN_IN_STUDENT)
                     }
                     USER_DOES_NOT_EXIST -> {
-                        currNewUser = id
                         intent = Intent(context, NewStudentActivity::class.java)
                         intent.setAction(ACTION_CREATE_NEW_PROFILE)
                     }
@@ -84,11 +77,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode : Int, resultCode : Int, data : Intent?){
         val db = MentorAppDatabase(this)
-        if(requestCode == GET_NEW_USER_NAME_RESULT && resultCode == Activity.RESULT_OK && currNewUser != "" && data != null){
+        if(requestCode == GET_NEW_USER_NAME_RESULT && resultCode == Activity.RESULT_OK && data != null){
             GlobalScope.launch {
-                db.userDao().insert(User(currNewUser, data.getStringExtra("name"), STUDENT_LEVEL))
-                currNewUser = ""
-                findViewById<Button>(R.id.sign_in_button).callOnClick()
+                db.userDao().insert(User(unique_id_input.text.toString(), data.getStringExtra("name"), STUDENT_LEVEL))
+                sign_in_button.callOnClick()
             }
         }
     }

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import kotlinx.android.synthetic.main.fragment_sign_out.view.*
 
 class SignOutFragment : Fragment() {
     companion object {
@@ -20,9 +21,8 @@ class SignOutFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         var v = inflater.inflate(R.layout.fragment_sign_out, container, false)
-        var button = v.findViewById<View>(R.id.sign_out_button)
 
-        button.setOnClickListener {
+        v.sign_out_button.setOnClickListener {
             var intent = Intent(v.context, MainActivity::class.java)
             intent.setAction(ACTION_SIGN_OUT)
             startActivity(intent)
