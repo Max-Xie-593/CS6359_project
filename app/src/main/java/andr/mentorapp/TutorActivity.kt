@@ -5,7 +5,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_tutor.*
 
-var checkedInTutors = ArrayList<String>()
+var checkedInTutors = HashSet<String>()
 
 class TutorActivity : AppCompatActivity() {
 
@@ -39,7 +39,7 @@ class TutorActivity : AppCompatActivity() {
         check_in_button.setVisibility(View.GONE)
         check_out_button.setVisibility(View.VISIBLE)
 
-        checkedInTutors.add(id)
+        addTutor(id)
     }
 
     fun checkOutTutor(id: String) {
@@ -48,6 +48,14 @@ class TutorActivity : AppCompatActivity() {
         check_in_button.setVisibility(View.VISIBLE)
         check_out_button.setVisibility(View.GONE)
 
+        removeTutor(id)
+    }
+
+    fun addTutor(id: String) {
+        checkedInTutors.add(id)
+    }
+
+    fun removeTutor(id: String) {
         checkedInTutors.remove(id)
     }
 

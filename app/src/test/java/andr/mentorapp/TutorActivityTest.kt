@@ -1,7 +1,5 @@
 package andr.mentorapp
 
-import org.junit.After
-import org.junit.Before
 import org.junit.Test
 
 /**
@@ -13,28 +11,17 @@ import org.junit.Test
 class TutorActivityTest {
     private val tutorActivity = TutorActivity()
 
-    @Before
-    fun init(){
-        userLevel.clear()
-        userName.clear()
-    }
-
-    @After
-    fun finalize(){
-        userLevel.clear()
-        userName.clear()
-    }
-
     @Test
     fun testCheckInTutor() {
         val id = "newStudent"
-        tutorActivity.checkInTutor(id)
+        tutorActivity.addTutor(id)
         assert(checkedInTutors.contains(id))
+        tutorActivity.removeTutor(id)
     }
 
     @Test fun testCheckOutTutor() {
         val id = "newStudent"
-        tutorActivity.checkOutTutor(id)
+        tutorActivity.removeTutor(id)
         assert(!checkedInTutors.contains(id))
     }
 }

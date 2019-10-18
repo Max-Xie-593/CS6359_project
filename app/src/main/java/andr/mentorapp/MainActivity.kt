@@ -43,7 +43,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode : Int, resultCode : Int, data : Intent?){
         val db = MentorAppDatabase(this)
-        
         if(requestCode == GET_NEW_USER_NAME_RESULT && resultCode == Activity.RESULT_OK && data != null){
             GlobalScope.launch {
                 db.userDao().insert(StudentUser(unique_id_input.text.toString(), data.getStringExtra("name")))
