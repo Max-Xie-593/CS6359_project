@@ -21,6 +21,7 @@ class TutorActivityTest {
 
     @Test fun testCheckOutTutor() {
         val id = "newStudent"
+        tutorActivity.addTutor(id)
         tutorActivity.removeTutor(id)
         assert(!checkedInTutors.contains(id))
     }
