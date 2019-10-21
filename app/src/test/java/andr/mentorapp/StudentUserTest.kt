@@ -16,22 +16,22 @@ class StudentUserTest {
     val user = StudentUser("student_test", "Student User")
 
     @Test
-    fun AdminUserConstructorTest(){
+    fun StudentUserConstructorTest(){
         assertNotNull(user.getIntent(context))
     }
 
     @Test
-    fun getAdminUserIdTest(){
+    fun getStudentUserIdTest(){
         assertEquals("student_test", user.userId)
     }
 
     @Test
-    fun getAdminUserNameTest(){
+    fun getStudentUserNameTest(){
         assertEquals("Student User", user.userName)
     }
 
     @Test
-    fun getAdminUserLevelTest(){
+    fun getStudentUserLevelTest(){
         assertEquals(STUDENT_LEVEL, user.userLevel)
     }
 }
