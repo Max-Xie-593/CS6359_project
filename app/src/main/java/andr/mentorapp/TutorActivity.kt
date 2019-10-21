@@ -5,7 +5,6 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_tutor.*
 
-var checkedInTutors = HashSet<String>()
 
 class TutorActivity : AppCompatActivity() {
 
@@ -18,6 +17,14 @@ class TutorActivity : AppCompatActivity() {
         if (checkedInTutors.contains(intent.getStringExtra("id"))) {
             check_out_button.setVisibility(View.VISIBLE)
             check_in_button.setVisibility(View.GONE)
+            for (match in tutorSessions){
+                if (match.tutorUser == intent.getStringExtra("id")){
+                    tutorMessage.setText("You're currently helping " + match.studentUser)
+                    check_out_button.setVisibility(View.GONE)
+                    tutorDoneButton.setVisibility(View.VISIBLE)
+                    break
+                }
+            }
         } else {
             check_in_button.setVisibility(View.VISIBLE)
             check_out_button.setVisibility(View.GONE)
@@ -29,6 +36,11 @@ class TutorActivity : AppCompatActivity() {
 
         check_out_button.setOnClickListener {
             this.checkOutTutor(intent.getStringExtra("id"))
+        }
+
+        tutorDoneButton.setOnClickListener{
+            this.finishSession()
+
         }
 
     }
@@ -51,12 +63,42 @@ class TutorActivity : AppCompatActivity() {
         removeTutor(id)
     }
 
+    fun finishSession(){
+
+        for (match in tutorSessions){
+            if (match.tutorUser == intent.getStringExtra("id")){
+                tutorSessions.remove(match)
+                break
+            }
+        }
+        if (!studentQueue.isEmpty()){
+            val studentid = studentQueue.poll()
+            tutorSessions.add(StudentTutorMatch(studentid, intent.getStringExtra("id")))
+            tutorMessage.setText("Thanks for helping, now you are tutoring " + studentid)
+        }
+        else {
+            tutorMessage.setText("Welcome to the Tutor page " + intent.getStringExtra("name") + "!")
+            availableTutors.add(intent.getStringExtra("id"))
+
+            tutorDoneButton.setVisibility(View.GONE)
+            check_out_button.setVisibility(View.VISIBLE)
+        }
+
+    }
+
     fun addTutor(id: String) {
         checkedInTutors.add(id)
+        availableTutors.add(id)
     }
 
     fun removeTutor(id: String) {
-        checkedInTutors.remove(id)
+        if (availableTutors.contains(id)){
+            availableTutors.remove(id)
+            checkedInTutors.remove(id)
+        }
+        else
+            tutorMessage.setText("Cannot Checkout while helping a student")
+
     }
 
 }
