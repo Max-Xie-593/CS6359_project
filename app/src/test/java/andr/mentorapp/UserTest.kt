@@ -15,7 +15,6 @@ class UserTest {
 
     @Test
     fun UserConstructorTest(){
-        val user2 = User("constructorTest", "Construct", 1)
         assertNull(user.getIntent(context))
     }
 
@@ -30,7 +29,7 @@ class UserTest {
     }
 
     @Test
-    fun getuserLevelTest(){
+    fun getUserLevelTest(){
         assertEquals(1, user.userLevel)
     }
 }
