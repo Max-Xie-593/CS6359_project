@@ -12,11 +12,11 @@ class TutorActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tutor)
 
-        tutorMessage.setText("Welcome to the Tutor page " + intent.getStringExtra("name") + "!")
+        tutorMessage.text = "Welcome to the Tutor page " + intent.getStringExtra("name") + "!"
 
         if (checkedInTutors.contains(intent.getStringExtra("id"))) {
-            check_out_button.setVisibility(View.VISIBLE)
-            check_in_button.setVisibility(View.GONE)
+            check_out_button.visibility = View.VISIBLE
+            check_in_button.visibility = View.GONE
             for (match in tutorSessions){
                 if (match.tutorUser == intent.getStringExtra("id")){
                     tutorMessage.setText("You're currently helping " + match.studentUser)
@@ -26,8 +26,8 @@ class TutorActivity : AppCompatActivity() {
                 }
             }
         } else {
-            check_in_button.setVisibility(View.VISIBLE)
-            check_out_button.setVisibility(View.GONE)
+            check_in_button.visibility = View.VISIBLE
+            check_out_button.visibility = View.GONE
         }
 
         check_in_button.setOnClickListener {
@@ -38,27 +38,33 @@ class TutorActivity : AppCompatActivity() {
             this.checkOutTutor(intent.getStringExtra("id"))
         }
 
+        view_schedule_button.setOnClickListener {
+            intent.setClass(this, TutorScheduleActivity::class.java)
+            intent.putExtra("tutorId", intent.getStringExtra("id"))
+            intent.putExtra("tutorName", intent.getStringExtra("name"))
+            startActivity(intent)
+        }
+
         tutorDoneButton.setOnClickListener{
             this.finishSession()
-
         }
 
     }
 
     fun checkInTutor(id: String) {
-        tutorMessage.setText("You are now checked in, " + intent.getStringExtra("name") + "!")
+        tutorMessage.text = "You are now checked in, " + intent.getStringExtra("name") + "!"
 
-        check_in_button.setVisibility(View.GONE)
-        check_out_button.setVisibility(View.VISIBLE)
+        check_in_button.visibility = View.GONE
+        check_out_button.visibility = View.VISIBLE
 
         addTutor(id)
     }
 
     fun checkOutTutor(id: String) {
-        tutorMessage.setText("You are now checked out, " + intent.getStringExtra("name") + "!")
+        tutorMessage.text = "You are now checked out, " + intent.getStringExtra("name") + "!"
 
-        check_in_button.setVisibility(View.VISIBLE)
-        check_out_button.setVisibility(View.GONE)
+        check_in_button.visibility = View.VISIBLE
+        check_out_button.visibility = View.GONE
 
         removeTutor(id)
     }

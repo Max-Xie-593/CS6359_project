@@ -10,7 +10,7 @@ const val ACTION_SIGN_IN_TUTOR = "andr.mentorapp.SIGNINTUTOR"
 class TutorUser(userId: String, userName: String) : User(userId, userName, TUTOR_LEVEL) {
     override fun getIntent(context: Context): Intent {
         val intent = Intent(context, TutorActivity::class.java)
-        intent.setAction(ACTION_SIGN_IN_TUTOR)
+        intent.action = ACTION_SIGN_IN_TUTOR
         intent.putExtra("id", userId)
         intent.putExtra("name", userName)
         return intent

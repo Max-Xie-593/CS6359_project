@@ -3,14 +3,13 @@ package andr.mentorapp
 import org.junit.Test
 
 /**
- * Example local unit test, which will execute on the development machine (host).
- *
- * See [testing documentation](http://d.android.com/tools/testing).
+ * Class to test the TutorActivity
  */
 
 class TutorActivityTest {
     private val tutorActivity = TutorActivity()
 
+    // Test: check in tutor to system
     @Test
     fun testCheckInTutor() {
         val id = "newStudent"
@@ -19,7 +18,9 @@ class TutorActivityTest {
         tutorActivity.removeTutor(id)
     }
 
-    @Test fun testCheckOutTutor() {
+    // Test: check out tutor from system
+    @Test
+    fun testCheckOutTutor() {
         val id = "newStudent"
         tutorActivity.addTutor(id)
         tutorActivity.removeTutor(id)

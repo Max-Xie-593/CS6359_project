@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         val db = MentorAppDatabase(this)
 
         sign_in_button.setOnClickListener {
-            val context  = this
+            val context = this
             GlobalScope.launch {
                 val id = unique_id_input.text.toString()
                 val user = db.userDao().findUserById(id)

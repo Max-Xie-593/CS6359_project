@@ -23,12 +23,22 @@
             app:layout_constraintTop_toTopOf="parent"/>
 
     <Button
+            android:id="@+id/view_schedule_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="View schedule"
+            android:clickable="true"
+            app:layout_constraintTop_toBottomOf="@+id/tutorMessage"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+    <Button
             android:id="@+id/check_in_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Check in"
             android:clickable="true"
-            app:layout_constraintTop_toBottomOf="@+id/tutorMessage"
+            app:layout_constraintTop_toBottomOf="@+id/view_schedule_button"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"/>
 
@@ -38,7 +48,7 @@
             android:layout_height="wrap_content"
             android:text="Check out"
             android:clickable="true"
-            app:layout_constraintTop_toBottomOf="@+id/tutorMessage"
+            app:layout_constraintTop_toBottomOf="@+id/view_schedule_button"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"/>
 

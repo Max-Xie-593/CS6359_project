@@ -8,6 +8,9 @@ interface UserDao {
     @Query("SELECT * FROM user")
     fun getAll() : List<User>
 
+    @Query("SELECT * FROM user WHERE userLevel = $TUTOR_LEVEL")
+    fun getAllTutors() : List<TutorUser>
+
     @Query("SELECT * FROM user WHERE userId IS :userId")
     fun findUserByIdFromdDB(userId : String) : User?
 

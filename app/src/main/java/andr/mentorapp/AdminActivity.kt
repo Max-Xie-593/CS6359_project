@@ -10,7 +10,21 @@ class AdminActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_admin)
 
-        adminMessage.setText("Welcome to the Admin page " + intent.getStringExtra("name") + "!")
+        adminMessage.text = "Welcome to the Admin page " + intent.getStringExtra("name") + "!"
+
+        view_tutors_button.setOnClickListener {
+            intent.setClass(this,AdminListActivity::class.java)
+            startActivity(intent)
+        }
+
+        view_admins_button.setOnClickListener {
+
+        }
+
+        view_schedule_button.setOnClickListener {
+            intent.setClass(this, TutorListActivity::class.java)
+            startActivity(intent)
+        }
     }
 
 }

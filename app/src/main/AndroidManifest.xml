@@ -35,6 +35,21 @@
                 <action android:name="andr.mentorapp2.CREATENEWPROFILE"/>
             </intent-filter>
         </activity>
+        <activity android:name=".TutorScheduleActivity">
+            <intent-filter>
+                <action android:name="andr.mentorapp2.VIEW_TUTOR_SCHEDULE"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".TutorListActivity">
+            <intent-filter>
+                <action android:name="andr.mentorapp2.VIEW_TUTOR_LIST"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".AdminListActivity">
+            <intent-filter>
+                <action android:name="andr.mentorapp2.VIEW_ADMIN_LIST"/>
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

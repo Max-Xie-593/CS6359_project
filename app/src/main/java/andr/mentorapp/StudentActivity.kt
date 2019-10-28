@@ -14,7 +14,7 @@ class StudentActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_student)
 
-        studentMessage.setText("Welcome to the Student page " + intent.getStringExtra("name") + "!")
+        studentMessage.text = "Welcome to the Student page " + intent.getStringExtra("name") + "!"
 
         studentDone.setVisibility(View.GONE)
 

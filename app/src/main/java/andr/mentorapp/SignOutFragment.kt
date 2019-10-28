@@ -8,13 +8,19 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_sign_out.view.*
 
+/*
+ * This class creates a Fragment representing the Sign Out button on each User's home page
+ */
 class SignOutFragment : Fragment() {
+    // Keep info about creating Fragment here to maintain modularity
     companion object {
+        // Activity can call this function to create new sign out fragment
         fun newInstance(): SignOutFragment {
             return SignOutFragment()
         }
     }
 
+    // When the Fragment is created, set the sign out button's action when clicked
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -24,7 +30,7 @@ class SignOutFragment : Fragment() {
 
         v.sign_out_button.setOnClickListener {
             var intent = Intent(v.context, MainActivity::class.java)
-            intent.setAction(ACTION_SIGN_OUT)
+            intent.action = ACTION_SIGN_OUT
             startActivity(intent)
         }
 
