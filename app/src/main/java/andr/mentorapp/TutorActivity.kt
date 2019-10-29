@@ -14,6 +14,11 @@ class TutorActivity : AppCompatActivity() {
 
         tutorMessage.text = "Welcome to the Tutor page " + intent.getStringExtra("name") + "!"
 
+        // add sign out fragment to view
+        if (savedInstanceState == null) {
+            addFragment(activity_tutor_parent.id, SignOutFragment.newInstance())
+        }
+
         if (checkedInTutors.contains(intent.getStringExtra("id"))) {
             check_out_button.visibility = View.VISIBLE
             check_in_button.visibility = View.GONE

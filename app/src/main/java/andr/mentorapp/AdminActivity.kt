@@ -12,6 +12,11 @@ class AdminActivity : AppCompatActivity() {
 
         adminMessage.text = "Welcome to the Admin page " + intent.getStringExtra("name") + "!"
 
+        // add sign out fragment to view
+        if (savedInstanceState == null) {
+            addFragment(activity_admin_parent.id, SignOutFragment.newInstance())
+        }
+
         view_tutors_button.setOnClickListener {
             intent.setClass(this,AdminListActivity::class.java)
             startActivity(intent)
