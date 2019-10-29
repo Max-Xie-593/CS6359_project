@@ -1,11 +1,11 @@
 package andr.mentorapp
 
-import andr.mentorapp.ActivityMainUtil.addTutor
-import andr.mentorapp.ActivityMainUtil.availableTutors
-import andr.mentorapp.ActivityMainUtil.checkedInTutors
-import andr.mentorapp.ActivityMainUtil.finishSession
-import andr.mentorapp.ActivityMainUtil.removeTutor
-import andr.mentorapp.ActivityMainUtil.tutorSessions
+import andr.mentorapp.ActivityCommonUtil.addTutor
+import andr.mentorapp.ActivityCommonUtil.availableTutors
+import andr.mentorapp.ActivityCommonUtil.checkedInTutors
+import andr.mentorapp.ActivityCommonUtil.finishSession
+import andr.mentorapp.ActivityCommonUtil.removeTutor
+import andr.mentorapp.ActivityCommonUtil.tutorSessions
 import andr.mentorapp.Database.TutorUser
 import android.os.Bundle
 import android.view.View
@@ -41,8 +41,8 @@ class TutorActivity : AppCompatActivity() {
                 tutorMessage.setText("Welcome to the Tutor page " + tutorUser.userName + "!")
                 check_out_button.setVisibility(View.VISIBLE)
                 check_in_button.setVisibility(View.GONE)
-                for ((matchTutor, matchStudent) in tutorSessions) {
-
+              
+                for ((matchTutor, _) in tutorSessions) {
                     if (matchTutor.userId == tutorUser.userId) {
                         tutorMessage.setText("You're currently helping " + tutorSessions.get(matchTutor)!!.userName)
                         check_out_button.setVisibility(View.GONE)
@@ -84,7 +84,6 @@ class TutorActivity : AppCompatActivity() {
     }
 
     fun checkOutTutor(tutorUser: TutorUser) {
-
         for(availableTutor in availableTutors) {
             if (availableTutor.userId == tutorUser.userId) {
                 removeTutor(availableTutor)
@@ -111,16 +110,15 @@ class TutorActivity : AppCompatActivity() {
     * @param tutorUser    the object of the tutor using this page
     * @return void
     */
-
     fun finishTutorSession(tutorUser: TutorUser){
-
         finishSession(tutorUser)
         tutorMessage.setText("Welcome to the Tutor page " + tutorUser.userName + "!")
         tutorDoneButton.setVisibility(View.GONE)
         check_out_button.setVisibility(View.VISIBLE)
-        for ((matchTutor, matchStudent) in tutorSessions) {
+
+        for ((matchTutor, _) in tutorSessions) {
             if (matchTutor.userId == tutorUser.userId) {
-                tutorMessage.setText("Thanks for helping, now you are tutoring " + tutorSessions.get(tutorUser)!!.userName)
+                tutorMessage.setText("Thanks for helping, now you are tutoring " + tutorSessions.get(matchTutor)!!.userName)
                 tutorDoneButton.setVisibility(View.VISIBLE)
                 check_out_button.setVisibility(View.GONE)
             }

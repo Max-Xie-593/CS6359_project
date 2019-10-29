@@ -57,7 +57,7 @@ object ActivityCommonUtil{
 
     fun finishSession(tutor: TutorUser){
 
-        for ((matchTutor, matchStudent) in tutorSessions){
+        for ((matchTutor, _) in tutorSessions){
             if (matchTutor.userId == tutor.userId) {
                 if (!studentQueue.isEmpty()) {
                     tutorSessions.put(matchTutor, studentQueue.poll())
