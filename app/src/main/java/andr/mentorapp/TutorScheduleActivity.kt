@@ -5,15 +5,19 @@ import android.widget.TableRow
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_tutor_schedule.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
-/*
+/**
  * This class handles displaying the schedule for the specified Tutor
+ *
+ * @author Courtney Erbes
+ * @date 10/18/19
  */
 class TutorScheduleActivity : AppCompatActivity() {
-
-    // When the Activity is created, set title and display schedule of Tutor
+    /**
+     *  When the Activity is created, set title and display schedule of Tutor
+     *
+     *  @param savedInstanceState data most recently provided
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tutor_schedule)
@@ -23,7 +27,9 @@ class TutorScheduleActivity : AppCompatActivity() {
         this.displaySchedule()
     }
 
-    // helper function to display schedule of the specified Tutor to the User
+    /*
+     * Helper function to display schedule of the specified Tutor to the User
+     */
     fun displaySchedule() {
         val context = this
         val db = MentorAppDatabase.invoke(context)
@@ -50,5 +56,4 @@ class TutorScheduleActivity : AppCompatActivity() {
             scheduleTable.addView(row)
         }
     }
-
 }

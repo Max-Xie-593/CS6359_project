@@ -12,12 +12,24 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_tutor.*
 
-
+/**
+ *  Tutor Home Page
+ *
+ *  This class creates the Tutor home screen after signing in as a Tutor to the app
+ *
+ *  @author Mugdha Gupta, Courtney Erbes
+ *  @date 10/26/2019
+ */
 class TutorActivity : AppCompatActivity() {
 
     lateinit var thisTutorID : String
     lateinit var tutorUser : TutorUser
 
+    /**
+     *  creates the tutor home page screen
+     *
+     *  @param savedInstanceState data most recently provided
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tutor)
@@ -75,6 +87,11 @@ class TutorActivity : AppCompatActivity() {
 
     }
 
+    /**
+     *  checks in tutor and updates view
+     *
+     *  @param tutorUser    TutorUser checking in
+     */
     fun checkInTutor(tutorUser: TutorUser) {
         tutorMessage.setText("You are now checked in, " + tutorUser.userName + "!")
         check_in_button.setVisibility(View.GONE)
@@ -83,6 +100,11 @@ class TutorActivity : AppCompatActivity() {
         addTutor(tutorUser)
     }
 
+    /**
+     *  checks out tutor and updates view
+     *
+     *  @param tutorUser    TutorUser checking out
+     */
     fun checkOutTutor(tutorUser: TutorUser) {
         for(availableTutor in availableTutors) {
             if (availableTutor.userId == tutorUser.userId) {
@@ -98,7 +120,7 @@ class TutorActivity : AppCompatActivity() {
 
     }
   
-    /*
+    /**
     * This is the function called when the "Done" button is clicked
     *
     * Calls the finishSession function from ActivityCommonUtil to end the session

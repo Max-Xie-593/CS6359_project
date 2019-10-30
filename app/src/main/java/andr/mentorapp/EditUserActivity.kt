@@ -15,9 +15,9 @@ import kotlinx.android.synthetic.main.activity_edit_user.*
  *  @date 10/26/2019
  */
 class EditUserActivity : AppCompatActivity() {
-
     /**
      *  creates the edit screen and holds data to change a attribute of the tutor
+     *
      *  @param savedInstanceState data brought from previous request
      */
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,7 +31,6 @@ class EditUserActivity : AppCompatActivity() {
             val intent = getIntent() // retrieve the data from the preceding request
             val newIntent: Intent = Intent() // create new request
             newIntent.putExtra("id", intent.getStringExtra("id")) // add data from the previous request
-            //newIntent.putExtra("name",new_user_name_input.text.toString()) // add data entered in this screen
             db.update(intent.getStringExtra("id"),new_user_name_input.text.toString())
             setResult(Activity.RESULT_OK,newIntent) // set the result
             finish() // exit the screen

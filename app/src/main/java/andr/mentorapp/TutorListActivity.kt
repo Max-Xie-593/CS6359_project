@@ -8,13 +8,19 @@ import kotlinx.android.synthetic.main.activity_tutor_list.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-/*
+/**
  * This class handles the page listing the Tutors in the system
  * in order to allow Admins to select which Tutor they wish to view the schedule of
+ *
+ * @author Courtney Erbes
+ * @date 10/19/19
  */
 class TutorListActivity : AppCompatActivity() {
-
-    // When the Activity is created, set title and display list of Tutors
+    /**
+     *  When the Activity is created, set title and display list of Tutors
+     *
+     *  @param savedInstanceState data most recently provided
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tutor_list)
@@ -24,7 +30,9 @@ class TutorListActivity : AppCompatActivity() {
         this.displayList()
     }
 
-    // helper function to display list of Tutors to the User
+    /**
+     * Helper function to display list of Tutors to the User
+     */
     fun displayList() {
         val context = this
         val db = MentorAppDatabase.invoke(context)
@@ -50,5 +58,4 @@ class TutorListActivity : AppCompatActivity() {
             tutorListTable.addView(row)
         }
     }
-
 }

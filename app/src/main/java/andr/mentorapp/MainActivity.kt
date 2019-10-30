@@ -15,8 +15,17 @@ const val ACTION_SIGN_OUT = "andr.mentorapp.SIGNOUT"
 
 const val GET_NEW_USER_NAME_RESULT : Int = 0
 
+/**
+ * Main page/ launcher page for the app
+ *
+ * @author Mugdha Gupta
+ * @date 9/28/19
+ */
 class MainActivity : AppCompatActivity() {
-
+    /**
+     *  Creates the launcher screen
+     *  @param savedInstanceState data brought from previous request
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -40,7 +49,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
+    /**
+     *  Create new Student on result of generating intent
+     *
+     *  @param requestCode      Int code result for request
+     *  @param resultCode       Int code result from the result
+     *  @param data             Intent? generated to use to create new user
+     */
     override fun onActivityResult(requestCode : Int, resultCode : Int, data : Intent?){
         val db = MentorAppDatabase.invoke(this)
         if(requestCode == GET_NEW_USER_NAME_RESULT && resultCode == Activity.RESULT_OK && data != null){
