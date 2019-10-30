@@ -1,11 +1,11 @@
 package andr.mentorapp
 
 /**
- * Example local unit test, which will execute on the development machine (host).
+ * Class to test the MainActivity
  *
- * See [testing documentation](http://d.android.com/tools/testing).
+ * @author Mugdha Gupta
+ * @date 10/01/19
  */
-
 class MainActivityTest {
 
 }

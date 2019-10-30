@@ -10,8 +10,11 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 
-/*
+/**
  * This class tests the database queries associated with the TutorScheduleDao
+ *
+ * @author Courtney Erbes
+ * @date 10/15/19
  */
 @RunWith(RobolectricTestRunner::class)
 class TutorScheduleDaoTest {

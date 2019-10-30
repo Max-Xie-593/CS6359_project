@@ -25,7 +25,7 @@ class StudentActivity : AppCompatActivity() {
     lateinit var thisStudentID: String
     lateinit var studentUser: StudentUser
 
-    /*
+    /**
      * On start of the student screen, the student can be in 3 states:
      * 1. Signed in
      * 2. Getting Help by a Tutor
@@ -38,6 +38,7 @@ class StudentActivity : AppCompatActivity() {
      * Then check if the student is in the queue to be helped
      *      which if true, display their queue position and the leave queue button instead
      *
+     * @param savedInstanceState   Bundle? data brought from previous request
      */
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -99,7 +100,7 @@ class StudentActivity : AppCompatActivity() {
     }
 
 
-    /*
+    /**
      * This is the function called when the "Leave Queue" button is clicked
      *
      * Calls the leaveQueue function from ActivityCommonUtil to edit the queue
@@ -109,7 +110,6 @@ class StudentActivity : AppCompatActivity() {
      * @param studentUser    the object of the student using this page
      * @return void
      */
-
     fun leaveFromQueue(studentUser: StudentUser) {
 
         if (leaveQueue(studentUser)) {
@@ -125,7 +125,7 @@ class StudentActivity : AppCompatActivity() {
 
     }
 
-    /*
+    /**
      * This is the function called when the "Get Help" button is clicked
      *
      * Calls the matchStudentTutor function from ActivityCommonUtil to pair with a tutor
@@ -135,7 +135,6 @@ class StudentActivity : AppCompatActivity() {
      * @param studentUser    the object of the student using this page
      * @return void
      */
-
     fun makeMatch(studentUser: StudentUser) {
 
         if (matchStudentTutor(studentUser)) {
@@ -157,7 +156,7 @@ class StudentActivity : AppCompatActivity() {
 
     }
 
-    /*
+    /**
     * This is the function called when the "Done" button is clicked
     *
     * Calls the finishSession function from ActivityCommonUtil to end the session
@@ -166,7 +165,6 @@ class StudentActivity : AppCompatActivity() {
     * @param studentUser    the object of the student using this page
     * @return void
     */
-
     fun finishStudentSession(studentUser: StudentUser) {
 
         for ((tutor, student) in tutorSessions) {

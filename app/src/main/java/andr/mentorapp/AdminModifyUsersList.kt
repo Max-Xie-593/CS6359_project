@@ -71,7 +71,6 @@ class AdminModifyUsersList : AppCompatActivity() {
             editButton.text = "EDIT"
             editButton.setOnClickListener {
                 intent = user.setIntent(this,EditUserActivity::class.java)
-                //intent.setClass(this,EditUserActivity::class.java)
                 intent.putExtra("id", user.userId)
                 startActivityForResult(intent,UPDATE_USER_RESULT)
             }
@@ -108,9 +107,8 @@ class AdminModifyUsersList : AppCompatActivity() {
             }
         }
         else if (requestCode == UPDATE_USER_RESULT && resultCode == Activity.RESULT_OK && data != null) { // from the Edit Button
-            //GlobalScope.launch {
-                //db.update(data.getStringExtra("id"), data.getStringExtra("name"))
-            //}
+            // TODO: implement this code section
+            // db.update(data.getStringExtra("id"), data.getStringExtra("name"))
         }
     }
 }

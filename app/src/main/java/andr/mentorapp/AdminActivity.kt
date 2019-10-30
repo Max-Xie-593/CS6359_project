@@ -52,5 +52,4 @@ class AdminActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
-
 }

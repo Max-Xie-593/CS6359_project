@@ -6,8 +6,11 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 
-/*
- * This class tests the TutorSchedule model
+/**
+ * Class to test the TutorSchedule model
+ *
+ * @author Courtney Erbes
+ * @date 10/13/19
  */
 @RunWith(RobolectricTestRunner::class)
 class TutorScheduleTest {
