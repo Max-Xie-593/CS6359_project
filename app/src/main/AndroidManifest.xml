@@ -45,9 +45,19 @@
                 <action android:name="andr.mentorapp2.VIEW_TUTOR_LIST"/>
             </intent-filter>
         </activity>
-        <activity android:name=".AdminListActivity">
+        <activity android:name=".AdminModifyUsersList">
             <intent-filter>
                 <action android:name="andr.mentorapp2.VIEW_ADMIN_LIST"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".AddUserActivity">
+            <intent-filter>
+                <action android:name="andr.mentorapp2.ADMIN_NEW_USER"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".EditUserActivity">
+            <intent-filter>
+                <action android:name="andr.mentorapp2.ADMIN_EDIT_USER"/>
             </intent-filter>
         </activity>
     </application>
