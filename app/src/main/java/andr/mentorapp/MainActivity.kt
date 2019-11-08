@@ -1,5 +1,6 @@
 package andr.mentorapp
 
+import andr.mentorapp.Database.DatabaseManager
 import andr.mentorapp.Database.StudentUser
 import andr.mentorapp.Database.USER_DOES_NOT_EXIST
 import android.app.Activity
@@ -30,13 +31,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val db = MentorAppDatabase(this)
+        DatabaseManager.init(this)
 
         sign_in_button.setOnClickListener {
             val context = this
             GlobalScope.launch {
                 val id = unique_id_input.text.toString()
-                val user = db.userDao().findUserById(id)
+                val user = DatabaseManager.getUserById(id)
 
                 intent = user.getIntent(context)
 
@@ -57,12 +58,9 @@ class MainActivity : AppCompatActivity() {
      *  @param data             Intent? generated to use to create new user
      */
     override fun onActivityResult(requestCode : Int, resultCode : Int, data : Intent?){
-        val db = MentorAppDatabase.invoke(this)
         if(requestCode == GET_NEW_USER_NAME_RESULT && resultCode == Activity.RESULT_OK && data != null){
-            GlobalScope.launch {
-                db.userDao().insert(StudentUser(unique_id_input.text.toString(), data.getStringExtra("name")))
-                sign_in_button.callOnClick()
-            }
+            DatabaseManager.insertUser(StudentUser(unique_id_input.text.toString(), data.getStringExtra("name")))
+            sign_in_button.callOnClick()
         }
     }
 }

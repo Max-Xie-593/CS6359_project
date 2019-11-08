@@ -1,5 +1,6 @@
 package andr.mentorapp
 
+import andr.mentorapp.Database.DatabaseManager
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TableRow
@@ -34,21 +35,18 @@ class TutorListActivity : AppCompatActivity() {
      * Helper function to display list of Tutors to the User
      */
     fun displayList() {
-        val context = this
-        val db = MentorAppDatabase.invoke(context)
-
-        val tutors = db.userDao().getAllTutors()
+        val tutors = DatabaseManager.getAllTutors()
 
         // add a row containing a button for each Tutor
         for (tutor in tutors) {
-            val row = TableRow(context)
+            val row = TableRow(this)
             val params = TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT)
-            val name = Button(context)
+            val name = Button(this)
 
             row.layoutParams = params
             name.text = tutor.userName
             name.setOnClickListener {
-                intent.setClass(context, TutorScheduleActivity::class.java)
+                intent.setClass(this, TutorScheduleActivity::class.java)
                 intent.putExtra("tutorId", tutor.userId)
                 intent.putExtra("tutorName", tutor.userName)
                 startActivity(intent)

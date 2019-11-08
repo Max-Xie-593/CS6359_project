@@ -6,6 +6,7 @@ import andr.mentorapp.ActivityCommonUtil.checkedInTutors
 import andr.mentorapp.ActivityCommonUtil.finishSession
 import andr.mentorapp.ActivityCommonUtil.removeTutor
 import andr.mentorapp.ActivityCommonUtil.tutorSessions
+import andr.mentorapp.Database.DatabaseManager
 import andr.mentorapp.Database.TutorUser
 import android.os.Bundle
 import android.view.View
@@ -39,11 +40,9 @@ class TutorActivity : AppCompatActivity() {
             addFragment(activity_tutor_parent.id, SignOutFragment.newInstance())
         }
 
-        val db = MentorAppDatabase.invoke(this).userDao()
-
         thisTutorID = intent.getStringExtra("id")
 
-        tutorUser = db.findUserById(thisTutorID) as TutorUser
+        tutorUser = DatabaseManager.getUserById(thisTutorID) as TutorUser
 
         check_in_button.setVisibility(View.VISIBLE)
         check_out_button.setVisibility(View.GONE)

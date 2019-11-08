@@ -20,14 +20,6 @@ interface UserDao {
     fun getAll() : List<User>
 
     /**
-     * Return list of all Tutors in database
-     *
-     * @return List<TutorUsers>  all tutors in the db
-     */
-    @Query("SELECT * FROM user WHERE userLevel = $TUTOR_LEVEL")
-    fun getAllTutors() : List<TutorUser>
-
-    /**
      * Return list of all Users in database at a certain user level
      *
      * @param level         int representing user's level

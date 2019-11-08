@@ -6,6 +6,7 @@ import andr.mentorapp.ActivityCommonUtil.leaveQueue
 import andr.mentorapp.ActivityCommonUtil.matchStudentTutor
 import andr.mentorapp.ActivityCommonUtil.studentQueue
 import andr.mentorapp.ActivityCommonUtil.tutorSessions
+import andr.mentorapp.Database.DatabaseManager
 import andr.mentorapp.Database.StudentUser
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -51,7 +52,6 @@ class StudentActivity : AppCompatActivity() {
         }
 
         thisStudentID = intent.getStringExtra("id")
-        val db = MentorAppDatabase.invoke(this).userDao()
 
         if (checkedInTutors.isEmpty()) {
             studentMessage.setText("The CSMC is closed (no checked in tutors), please come back when we are open again")
@@ -60,7 +60,7 @@ class StudentActivity : AppCompatActivity() {
             studentMessage.setText("Welcome to the Student page " + intent.getStringExtra("name") + "!")
             studentGetHelpButton.setVisibility(View.VISIBLE)
 
-            studentUser = db.findUserById(thisStudentID) as StudentUser
+            studentUser = DatabaseManager.getUserById(thisStudentID) as StudentUser
             for ((matchTutor, matchStudent) in tutorSessions) {
 
                 if (matchStudent.userId == studentUser.userId) {

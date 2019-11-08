@@ -1,5 +1,6 @@
 package andr.mentorapp
 
+import andr.mentorapp.Database.DatabaseManager
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -24,14 +25,11 @@ class EditUserActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_user) // sets the layout to the particular xml file
 
-        val context = this
-        val db = MentorAppDatabase.invoke(context).userDao() // call the database
-
         edit_user_button.setOnClickListener {
             val intent = getIntent() // retrieve the data from the preceding request
             val newIntent: Intent = Intent() // create new request
             newIntent.putExtra("id", intent.getStringExtra("id")) // add data from the previous request
-            db.update(intent.getStringExtra("id"),new_user_name_input.text.toString())
+            DatabaseManager.updateUser(intent.getStringExtra("id"),new_user_name_input.text.toString())
             setResult(Activity.RESULT_OK,newIntent) // set the result
             finish() // exit the screen
         }

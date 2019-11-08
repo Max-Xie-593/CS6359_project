@@ -1,6 +1,6 @@
 package andr.mentorapp
 
-import andr.mentorapp.Database.AdminUser
+import andr.mentorapp.Database.*
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -10,10 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_admin_modify_users_list.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import andr.mentorapp.Database.TutorUser
 import android.app.Activity
-import andr.mentorapp.Database.TUTOR_LEVEL
-import andr.mentorapp.Database.ADMIN_LEVEL
 
 const val GET_NEW_USER_RESULT : Int = 0
 const val UPDATE_USER_RESULT: Int = 1
@@ -55,10 +52,13 @@ class AdminModifyUsersList : AppCompatActivity() {
      */
     fun displayList() {
         val context = this
-        val db = MentorAppDatabase.invoke(context).userDao() // call the database
+        var users = if (database_level == TUTOR_LEVEL)
+                        DatabaseManager.getAllTutors()
+                    else
+                        DatabaseManager.getAllAdmins()
 
         // add a row containing an edit and delete button for each user in the list
-        for (user in db.getUsersByLevel(database_level)) {
+        for (user in users) {
             val row = TableRow(context)
             val params = TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT) // set the params for the Row
             val name = TextView(context)
@@ -79,7 +79,7 @@ class AdminModifyUsersList : AppCompatActivity() {
             val deleteButton = Button(context) // create the edit button to remove the particular user
             deleteButton.text = "DELETE"
             deleteButton.setOnClickListener {
-                db.delete(user) // delete the user from the database
+                DatabaseManager.deleteUser(user) // delete the user from the database
                 recreate() // update the screen
             }
             row.addView(deleteButton,2)
@@ -94,15 +94,13 @@ class AdminModifyUsersList : AppCompatActivity() {
      *  @param data information received from the finished execution of [startActivityForResult]
      */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        val context = this
-        val db = MentorAppDatabase(context).userDao()
         if(requestCode == GET_NEW_USER_RESULT && resultCode == Activity.RESULT_OK && data != null){ // from the Add Button
             when (database_level) {
                 TUTOR_LEVEL -> GlobalScope.launch {
-                    db.insert(TutorUser(data.getStringExtra("id"), data.getStringExtra("name")))
+                    DatabaseManager.insertUser(TutorUser(data.getStringExtra("id"), data.getStringExtra("name")))
                 }
                 ADMIN_LEVEL -> GlobalScope.launch {
-                    db.insert(AdminUser(data.getStringExtra("id"), data.getStringExtra("name")))
+                    DatabaseManager.insertUser(AdminUser(data.getStringExtra("id"), data.getStringExtra("name")))
                 }
             }
         }

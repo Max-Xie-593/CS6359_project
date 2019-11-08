@@ -66,37 +66,6 @@ class UserDaoTest {
 
     // Test: should return empty list since no tutors in db
     @Test
-    fun getAllTutorsTestEmpty() {
-        var users = userDao.getAllTutors()
-        assertEquals(users.size, 0)
-    }
-
-    // Test: should return 1 since size of list
-    @Test
-    fun getAllTutorsTestList1() {
-        addStudent("stu", "stu")
-        addTutor("tu", "tu")
-        addAdmin("ad", "ad")
-
-        var users = userDao.getAllTutors()
-        assertEquals(users.size, 1)
-    }
-
-    // Test: should return 3 since size of list
-    @Test
-    fun getAllTutorsTestList3() {
-        addStudent("stu", "stu")
-        addTutor("tu", "tu")
-        addAdmin("ad", "ad")
-        addTutor("tu2", "tu")
-        addTutor("tu3", "tu")
-
-        var users = userDao.getAllTutors()
-        assertEquals(users.size, 3)
-    }
-
-    // Test: should return empty list since no tutors in db
-    @Test
     fun getUsersByLevelTestEmpty() {
         var users = userDao.getUsersByLevel(ADMIN_LEVEL)
         assertEquals(users.size, 0)
@@ -226,33 +195,33 @@ class UserDaoTest {
         assertEquals(result.userId, "us")
     }
 
-    /*
+    /**
      * Helper function to add student
      * @param id        String id of student
      * @param name    String name of student
      * @return void
      */
-    fun addStudent(id: String, name: String) {
+    private fun addStudent(id: String, name: String) {
         userDao.insert(StudentUser(id, name))
     }
 
-    /*
+    /**
      * Helper function to add tutor
      * @param id        String id of tutor
      * @param name    String name of tutor
      * @return void
      */
-    fun addTutor(id: String, name: String) {
+    private fun addTutor(id: String, name: String) {
         userDao.insert(TutorUser(id, name))
     }
 
-    /*
+    /**
      * Helper function to add admin
      * @param id        String id of admin
      * @param name    String name of admin
      * @return void
      */
-    fun addAdmin(id: String, name: String) {
+    private fun addAdmin(id: String, name: String) {
         userDao.insert(AdminUser(id, name))
     }
 }

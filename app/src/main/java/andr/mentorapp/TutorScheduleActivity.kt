@@ -1,5 +1,6 @@
 package andr.mentorapp
 
+import andr.mentorapp.Database.DatabaseManager
 import android.os.Bundle
 import android.widget.TableRow
 import android.widget.TextView
@@ -32,10 +33,9 @@ class TutorScheduleActivity : AppCompatActivity() {
      */
     fun displaySchedule() {
         val context = this
-        val db = MentorAppDatabase.invoke(context)
 
         val shifts =
-            db.tutorScheduleDao().findTutorSchedulesByIdFromdDB(intent.getStringExtra("tutorId"))
+            DatabaseManager.getSchedulesByTutorId(intent.getStringExtra("tutorId"))
 
         // add a row informing the Day and Start/ End Time for each Tutor's shift
         for (shift in shifts) {
