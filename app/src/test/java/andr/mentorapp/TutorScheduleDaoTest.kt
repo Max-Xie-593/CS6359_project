@@ -44,6 +44,29 @@ class TutorScheduleDaoTest {
         assertEquals(tutorSchedules.size, 0)
     }
 
+    // Test: should return Tutor Schedule matching the given values
+    @Test
+    fun getTutorScheduleGivenValuesTest() {
+        var id = "new_tutor"
+        var day = "Monday"
+        var start = "10:00:00"
+        var end = "11:30:00"
+
+        var newSchedule = TutorSchedule(id, day, start, end)
+        tutorScheduleDao.insert(newSchedule)
+        var schedule = tutorScheduleDao.getSchedule(
+            id,
+            day,
+            start,
+            end
+        )
+
+        assertEquals(schedule.tutorId, id)
+        assertEquals(schedule.day, day)
+        assertEquals(schedule.shiftStart, start)
+        assertEquals(schedule.shiftEnd, end)
+    }
+
     // Test: should return list of all TutorSchedules in database for Tutor with id 'tutorId'
     @Test
     fun findTutorSchedulesByIdTest() {
@@ -76,5 +99,25 @@ class TutorScheduleDaoTest {
         assertEquals(list[1].day, "Tuesday")
         assertEquals(list[1].shiftStart, "12:00:00")
         assertEquals(list[1].shiftEnd, "13:30:00")
+    }
+
+    // Test: delete schedule from db
+    @Test
+    fun deleteScheduleTest() {
+        var id = "new_tutor"
+        var day = "Monday"
+        var start = "10:00:00"
+        var end = "11:30:00"
+
+        var newSchedule = TutorSchedule(id, day, start, end)
+        tutorScheduleDao.insert(newSchedule)
+
+        var tutorSchedules = tutorScheduleDao.getAll()
+        assertEquals(tutorSchedules.size, 1)
+
+        tutorScheduleDao.delete(newSchedule)
+
+        tutorSchedules = tutorScheduleDao.getAll()
+        assertEquals(tutorSchedules.size, 0)
     }
 }

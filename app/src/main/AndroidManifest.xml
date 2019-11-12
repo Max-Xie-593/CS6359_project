@@ -60,6 +60,11 @@
                 <action android:name="andr.mentorapp2.ADMIN_EDIT_USER"/>
             </intent-filter>
         </activity>
+        <activity android:name=".AddTutorScheduleActivity">
+            <intent-filter>
+                <action android:name="andr.mentorapp2.ADMIN_NEW_SCHEDULE"/>
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

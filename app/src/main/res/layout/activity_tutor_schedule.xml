@@ -15,33 +15,25 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+        <Button
+                android:id="@+id/add_schedule_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add"
+                android:clickable="true"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@+id/tutorScheduleMessage"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"/>
+
         <TableLayout
                 android:id="@+id/scheduleTable"
                 android:stretchColumns="2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/tutorScheduleMessage"
+                app:layout_constraintTop_toBottomOf="@+id/add_schedule_button"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent">
-
-                <TableRow
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                                android:layout_column="0"
-                                android:text="Day" />
-
-                        <TextView
-                                android:layout_column="1"
-                                android:text="Start Time" />
-
-                        <TextView
-                                android:layout_column="2"
-                                android:text="End Time" />
-
-            </TableRow>
-
         </TableLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

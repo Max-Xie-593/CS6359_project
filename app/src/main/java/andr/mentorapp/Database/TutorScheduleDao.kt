@@ -20,6 +20,14 @@ interface TutorScheduleDao {
     fun getAll() : List<TutorSchedule>
 
     /**
+     * Return TutorSchedule that matches the given values
+     *
+     * @return TutorSchedule  schedule that matches input in the db
+     */
+    @Query("SELECT * FROM tutor_schedule WHERE tutorId IS :tutorId AND day IS :day AND shiftStart IS :start AND shiftEnd IS :end")
+    fun getSchedule(tutorId: String, day: String, start: String, end: String) : TutorSchedule
+
+    /**
      * Return list of all TutorSchedules in database for Tutor with id 'tutorId'
      *
      * @param tutorId               id of tutor to get schedules for
@@ -36,4 +44,13 @@ interface TutorScheduleDao {
      */
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(schedule: TutorSchedule)
+
+    /**
+     * Delete tutor schedule from db
+     *
+     * @param schedule   TutorSchedule to delete from db
+     * @return void
+     */
+    @Delete
+    fun delete(schedule: TutorSchedule)
 }

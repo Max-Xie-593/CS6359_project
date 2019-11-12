@@ -49,6 +49,7 @@ class TutorListActivity : AppCompatActivity() {
                 intent.setClass(this, TutorScheduleActivity::class.java)
                 intent.putExtra("tutorId", tutor.userId)
                 intent.putExtra("tutorName", tutor.userName)
+                intent.putExtra("adminStatus", true)
                 startActivity(intent)
             }
 

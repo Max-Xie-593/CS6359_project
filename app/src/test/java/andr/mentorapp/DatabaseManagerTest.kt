@@ -324,9 +324,28 @@ class DatabaseManagerTest {
         Assert.assertEquals(tutorSchedules[2].shiftEnd, "15:30:00")
     }
 
-    // Test: should insert new tutor schedule into database
+    // Test: should insert new tutor schedule into database and then delete it
     @Test
-    fun insertTutorScheduleTest() {
+    fun insertAndDeleteTutorScheduleTest() {
+        var schedule = TutorSchedule("new_tutor", "Thursday", "14:00:00", "15:30:00")
+        DatabaseManager.insertTutorSchedule(schedule)
+        var tutorSchedules = DatabaseManager.getAllTutorSchedules()
+
+        Assert.assertEquals(tutorSchedules.size, 1)
+        Assert.assertEquals(tutorSchedules[0].tutorId, "new_tutor")
+        Assert.assertEquals(tutorSchedules[0].day, "Thursday")
+        Assert.assertEquals(tutorSchedules[0].shiftStart, "14:00:00")
+        Assert.assertEquals(tutorSchedules[0].shiftEnd, "15:30:00")
+
+        DatabaseManager.deleteTutorSchedule(schedule)
+
+        tutorSchedules = DatabaseManager.getAllTutorSchedules()
+        Assert.assertEquals(tutorSchedules.size, 0)
+    }
+
+    // Test: should delete tutor schedule from database given values of schedule
+    @Test
+    fun deleteTutorSchedulesGivenValuesTest() {
         addSchedule("new_tutor", "Thursday", "14:00:00", "15:30:00")
         var tutorSchedules = DatabaseManager.getAllTutorSchedules()
 
@@ -335,6 +354,16 @@ class DatabaseManagerTest {
         Assert.assertEquals(tutorSchedules[0].day, "Thursday")
         Assert.assertEquals(tutorSchedules[0].shiftStart, "14:00:00")
         Assert.assertEquals(tutorSchedules[0].shiftEnd, "15:30:00")
+
+        DatabaseManager.deleteTutorSchedule(
+            "new_tutor",
+            "Thursday",
+            "14:00:00",
+            "15:30:00"
+        )
+
+        tutorSchedules = DatabaseManager.getAllTutorSchedules()
+        Assert.assertEquals(tutorSchedules.size, 0)
     }
 
     /**

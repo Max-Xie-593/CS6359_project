@@ -128,5 +128,24 @@ class DatabaseManager {
         fun insertTutorSchedule(schedule: TutorSchedule) {
             scheduleDao!!.insert(schedule)
         }
+
+        /**
+         * Delete TutorSchedule from db
+         *
+         * @param schedule     TutorSchedule to delete from db
+         */
+        fun deleteTutorSchedule(schedule: TutorSchedule) {
+            scheduleDao!!.delete(schedule)
+        }
+
+        /**
+         * Delete TutorSchedule from db given day, start time, and end time
+         *
+         * @param schedule     TutorSchedule to delete from db
+         */
+        fun deleteTutorSchedule(tutorId: String, day: String, start: String, end: String) {
+            val schedule = scheduleDao!!.getSchedule(tutorId, day, start, end)
+            scheduleDao!!.delete(schedule)
+        }
     }
 }
