@@ -78,10 +78,8 @@ class TutorActivity : AppCompatActivity() {
         }
       
         view_schedule_button.setOnClickListener {
-            intent.setClass(this, TutorScheduleActivity::class.java)
-            intent.putExtra("tutorId", intent.getStringExtra("id"))
-            intent.putExtra("tutorName", intent.getStringExtra("name"))
-            startActivity(intent)
+            var vsIntent = ViewScheduleIntent(TutorViewScheduleStrategy())
+            startActivity(vsIntent.generateIntent(this, intent))
         }
 
     }

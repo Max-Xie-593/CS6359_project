@@ -28,7 +28,7 @@ class TutorScheduleActivity : AppCompatActivity() {
         this.displaySchedule()
     }
 
-    /*
+    /**
      * Helper function to display schedule of the specified Tutor to the User
      */
     fun displaySchedule() {

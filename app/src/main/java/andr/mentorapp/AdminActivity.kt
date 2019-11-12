@@ -48,8 +48,8 @@ class AdminActivity : AppCompatActivity() {
 
         // button to allow the admin to see the schedules of the tutors in the database
         view_schedule_button.setOnClickListener {
-            intent.setClass(this, TutorListActivity::class.java)
-            startActivity(intent)
+            var vsIntent = ViewScheduleIntent(AdminViewScheduleStrategy())
+            startActivity(vsIntent.generateIntent(this, intent))
         }
     }
 }
