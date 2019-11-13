@@ -1,21 +1,21 @@
 package andr.mentorapp.Database
 
-import andr.mentorapp.MentorAppDatabase
-import andr.mentorapp.TutorSchedule
-import andr.mentorapp.User
-import andr.mentorapp.UserDao
+import andr.mentorapp.*
 import android.content.Context
 
 /**
  * This class acts as a Bridge for the app to use the database
  *
- * @author Courtney Erbes
- * @date 11/05/19
+ * @author Courtney Erbes, Max Xie
+ * @date 11/09/19
  */
 class DatabaseManager {
     companion object {
         private var userDao : UserDao? = null
         private var scheduleDao : TutorScheduleDao? = null
+        private var coursesDao : TutorCoursesDao? = null
+        private var courseDao : CourseDao? = null
+        private var tutorCourseJoinDao : TutorCourseJoinDao? = null
 
         /**
          * Initialize DatabaseManager singleton
@@ -23,9 +23,12 @@ class DatabaseManager {
          * @param context       Context required to create the db
          */
         fun init(context: Context) {
-            var db = MentorAppDatabase.invoke(context)
+            val db = MentorAppDatabase.invoke(context)
             userDao = db.userDao()
             scheduleDao = db.tutorScheduleDao()
+            coursesDao = db.tutorCoursesDao()
+            courseDao = db.courseDao()
+            tutorCourseJoinDao = db.tutorCourseJoinDao()
         }
 
         /**
@@ -130,6 +133,59 @@ class DatabaseManager {
         }
 
         /**
+
+         * Get all TutorCourses from the database
+         *
+         * @return List<TutorCourses> List of all the TutorCourses
+         */
+        fun getAllTutorCourses() : List<TutorCourses> {
+            return coursesDao!!.getAll()
+        }
+
+        /**
+         * get all TutorCourses from the database with the given id
+         *
+         * @return List<TutorCourses> List of all the courses the tutor with the id can teach
+         */
+//        fun getCoursesByTutorId(id: String) : List<TutorCourses> {
+//            return coursesDao!!.findTutorCoursesByIdFromDB(id)
+//        }
+
+        /**
+         * get all TutorCourseJoins from the database with the given id
+         *
+         * @return List<TutorCourses> List of all the courses the tutor with the id can teach
+         */
+        fun getCoursesByTutorId(tutorId: String) : List<Course> {
+            return tutorCourseJoinDao!!.getCoursesForTutor(tutorId)
+        }
+
+        /**
+         * insert a new TutorCourse into the database
+         *
+         * @param course new TutorCourse to add into the database
+         */
+        fun insertTutorCourse(course: TutorCourses) {
+            coursesDao!!.insert(course)
+        }
+
+        /**
+         * delete a TutorCourse from the database
+         *
+         * @param courses TutorCourse to remove from the database
+         */
+        fun deleteCourse(courses: TutorCourses) {
+            coursesDao!!.delete(courses)
+        }
+
+        fun getAllCourses() : List<Course> {
+            return courseDao!!.getAll()
+        }
+
+        fun insertCourse(course: Course) {
+            courseDao!!.insert(course)
+        }
+
          * Delete TutorSchedule from db
          *
          * @param schedule     TutorSchedule to delete from db
@@ -146,6 +202,7 @@ class DatabaseManager {
         fun deleteTutorSchedule(tutorId: String, day: String, start: String, end: String) {
             val schedule = scheduleDao!!.getSchedule(tutorId, day, start, end)
             scheduleDao!!.delete(schedule)
+
         }
     }
 }

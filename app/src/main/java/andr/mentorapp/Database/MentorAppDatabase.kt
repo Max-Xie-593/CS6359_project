@@ -10,10 +10,10 @@ import andr.mentorapp.Database.*
 /**
  * Creates the database used by the app using Room
  *
- * @author Mugdha Gupta
- * @date 9/28/19
+ * @author Mugdha Gupta, Max Xie
+ * @date 11/9/19
  */
-@Database(entities = arrayOf(User::class, TutorSchedule::class), exportSchema = false, version = 4)
+@Database(entities = arrayOf(User::class, TutorSchedule::class, TutorCourses::class, Course::class, TutorCourseJoin::class), exportSchema = false, version = 5)
 abstract class MentorAppDatabase : RoomDatabase(){
     /**
      * Returns User Data Access Object for the db
@@ -28,6 +28,27 @@ abstract class MentorAppDatabase : RoomDatabase(){
      * @return UserDao  the object used to access TutorSchedule entity
      */
     abstract fun tutorScheduleDao() : TutorScheduleDao
+
+    /**
+     * Returns Tutor Course Data Access Object for the db
+     *
+     * @return UserDao  the object used to access TutorCourses entity
+     */
+    abstract fun tutorCoursesDao() : TutorCoursesDao
+
+    /**
+     * Returns Course Data Access Object for the db
+     *
+     * @return CourseDao  the object used to access Courses entity
+     */
+    abstract fun courseDao() : CourseDao
+
+    /**
+     * Returns Tutor Course Data Access Object for the db
+     *
+     * @return TutorCourseJoinDao  the object used to access TutorCourseJoin entity
+     */
+    abstract fun tutorCourseJoinDao() : TutorCourseJoinDao
 
     companion object{
         var TEST_MODE = false
@@ -72,6 +93,17 @@ abstract class MentorAppDatabase : RoomDatabase(){
                     db.execSQL("insert into tutor_schedule values ('mila', 'Monday', '10:00:00', '11:30:00')")
                     db.execSQL("insert into user values ('android', 'Android', $TUTOR_LEVEL)")
                     db.execSQL("insert into user values ('manifest', 'Manifest', $TUTOR_LEVEL)")
+                    db.execSQL("insert into tutor_courses values ('mila','Kotlin')")
+                    db.execSQL("insert into tutor_courses values ('mila','Operant Conditioning')")
+                    db.execSQL("insert into tutor_courses values ('mila','OOAD')")
+                    db.execSQL("insert into course values ('cs100', 'Computer Science I')")
+                    db.execSQL("insert into course values ('cs200', 'Computer Science II')")
+                    db.execSQL("insert into course values ('cs300', 'Computer Science III')")
+                    db.execSQL("insert into tutor_course_join values ('courtney', 'cs100')")
+                    db.execSQL("insert into tutor_course_join values ('courtney', 'cs200')")
+                    db.execSQL("insert into tutor_course_join values ('courtney', 'cs300')")
+                    db.execSQL("insert into tutor_course_join values ('mila', 'cs100')")
+
                 }
             })
             .allowMainThreadQueries()

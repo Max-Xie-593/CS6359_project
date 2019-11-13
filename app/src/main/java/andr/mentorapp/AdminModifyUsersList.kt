@@ -50,7 +50,7 @@ class AdminModifyUsersList : AppCompatActivity() {
     /**
      *  code to create the list of tutors
      */
-    fun displayList() {
+    protected fun displayList() {
         val context = this
         var users = if (database_level == TUTOR_LEVEL)
                         DatabaseManager.getAllTutors()
@@ -72,6 +72,11 @@ class AdminModifyUsersList : AppCompatActivity() {
             editButton.setOnClickListener {
                 intent = user.setIntent(this,EditUserActivity::class.java)
                 intent.putExtra("id", user.userId)
+                intent.putExtra("level", if (TUTOR_LEVEL == database_level) TUTOR_LEVEL else ADMIN_LEVEL)
+               // if (database_level == TUTOR_LEVEL)
+               //     intent.putExtra("level", TUTOR_LEVEL)
+               // else
+               //     intent.putExtra("level", ADMIN_LEVEL)
                 startActivityForResult(intent,UPDATE_USER_RESULT)
             }
             row.addView(editButton,1)
@@ -85,6 +90,14 @@ class AdminModifyUsersList : AppCompatActivity() {
             row.addView(deleteButton,2)
             listTable.addView(row)
         }
+    }
+
+    /**
+     *  override the method to update the screen after certain actions
+     */
+    override fun recreate() {
+        listTable.removeAllViews()
+        this.displayList()
     }
 
     /**
@@ -103,10 +116,12 @@ class AdminModifyUsersList : AppCompatActivity() {
                     DatabaseManager.insertUser(AdminUser(data.getStringExtra("id"), data.getStringExtra("name")))
                 }
             }
+
         }
         else if (requestCode == UPDATE_USER_RESULT && resultCode == Activity.RESULT_OK && data != null) { // from the Edit Button
             // TODO: implement this code section
             // db.update(data.getStringExtra("id"), data.getStringExtra("name"))
         }
+        recreate()
     }
 }
