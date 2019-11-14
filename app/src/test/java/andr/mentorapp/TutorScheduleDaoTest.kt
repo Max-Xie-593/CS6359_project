@@ -1,6 +1,9 @@
 package andr.mentorapp
 
+import andr.mentorapp.Database.DatabaseManager
+import andr.mentorapp.Database.Schedule
 import andr.mentorapp.Database.TutorScheduleDao
+import andr.mentorapp.Database.TutorUser
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import org.junit.Assert.*
@@ -51,8 +54,9 @@ class TutorScheduleDaoTest {
         var day = "Monday"
         var start = "10:00:00"
         var end = "11:30:00"
+        db!!.userDao().insert(TutorUser(id, "tu"))
 
-        var newSchedule = TutorSchedule(id, day, start, end)
+        var newSchedule = TutorSchedule(id, Schedule(day, start, end))
         tutorScheduleDao.insert(newSchedule)
         var schedule = tutorScheduleDao.getSchedule(
             id,
@@ -62,20 +66,21 @@ class TutorScheduleDaoTest {
         )
 
         assertEquals(schedule.tutorId, id)
-        assertEquals(schedule.day, day)
-        assertEquals(schedule.shiftStart, start)
-        assertEquals(schedule.shiftEnd, end)
+        assertEquals(schedule.schedule.day, day)
+        assertEquals(schedule.schedule.shiftStart, start)
+        assertEquals(schedule.schedule.shiftEnd, end)
     }
 
     // Test: should return list of all TutorSchedules in database for Tutor with id 'tutorId'
     @Test
     fun findTutorSchedulesByIdTest() {
-        var newSchedule = TutorSchedule("new_tutor", "Monday", "10:00:00", "11:30:00")
+        db!!.userDao().insert(TutorUser("new_tutor", "tu"))
+
+        var newSchedule = TutorSchedule("new_tutor", Schedule("Monday", "10:00:00", "11:30:00"))
         tutorScheduleDao.insert(newSchedule)
         var list = tutorScheduleDao.findTutorSchedulesByIdFromdDB("new_tutor")
 
         assertEquals(list.size, 1)
-        assertEquals(list[0].tutorId, "new_tutor")
         assertEquals(list[0].day, "Monday")
         assertEquals(list[0].shiftStart, "10:00:00")
         assertEquals(list[0].shiftEnd, "11:30:00")
@@ -84,18 +89,18 @@ class TutorScheduleDaoTest {
     // Test: should insert new TutorSchedule into database
     @Test
     fun insertScheduleTest() {
-        var newSchedule1 = TutorSchedule("new_tutor", "Monday", "10:00:00", "11:30:00")
-        var newSchedule2 = TutorSchedule("new_tutor", "Tuesday", "12:00:00", "13:30:00")
+        db!!.userDao().insert(TutorUser("new_tutor", "tu"))
+
+        var newSchedule1 = TutorSchedule("new_tutor", Schedule("Monday", "10:00:00", "11:30:00"))
+        var newSchedule2 = TutorSchedule("new_tutor", Schedule("Tuesday", "12:00:00", "13:30:00"))
         tutorScheduleDao.insert(newSchedule1)
         tutorScheduleDao.insert(newSchedule2)
         var list = tutorScheduleDao.findTutorSchedulesByIdFromdDB("new_tutor")
 
         assertEquals(list.size, 2)
-        assertEquals(list[0].tutorId, "new_tutor")
         assertEquals(list[0].day, "Monday")
         assertEquals(list[0].shiftStart, "10:00:00")
         assertEquals(list[0].shiftEnd, "11:30:00")
-        assertEquals(list[1].tutorId, "new_tutor")
         assertEquals(list[1].day, "Tuesday")
         assertEquals(list[1].shiftStart, "12:00:00")
         assertEquals(list[1].shiftEnd, "13:30:00")
@@ -108,8 +113,9 @@ class TutorScheduleDaoTest {
         var day = "Monday"
         var start = "10:00:00"
         var end = "11:30:00"
+        db!!.userDao().insert(TutorUser(id, "tu"))
 
-        var newSchedule = TutorSchedule(id, day, start, end)
+        var newSchedule = TutorSchedule(id, Schedule(day, start, end))
         tutorScheduleDao.insert(newSchedule)
 
         var tutorSchedules = tutorScheduleDao.getAll()

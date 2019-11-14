@@ -1,5 +1,6 @@
 package andr.mentorapp
 
+import andr.mentorapp.Database.Schedule
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Test
@@ -14,38 +15,38 @@ import org.robolectric.RobolectricTestRunner
  */
 @RunWith(RobolectricTestRunner::class)
 class TutorScheduleTest {
-    val schedule = TutorSchedule("tutor_test", "Monday", "13:00:00", "14:30:00")
+    val ts = TutorSchedule("tutor_test", Schedule("Monday", "13:00:00", "14:30:00"))
 
     // Test: constructor of TutorSchedule
     @Test
     fun tutorScheduleConstructorTest(){
-        assertNotNull(schedule.tutorId)
-        assertNotNull(schedule.day)
-        assertNotNull(schedule.shiftStart)
-        assertNotNull(schedule.shiftEnd)
+        assertNotNull(ts.tutorId)
+        assertNotNull(ts.schedule.day)
+        assertNotNull(ts.schedule.shiftStart)
+        assertNotNull(ts.schedule.shiftEnd)
     }
 
     // Test: retrieval of tutor Id corresponding with tutor schedule
     @Test
     fun getScheduleTutorIdTest(){
-        assertEquals("tutor_test", schedule.tutorId)
+        assertEquals("tutor_test", ts.tutorId)
     }
 
     // Test: retrieval of tutor schedule day
     @Test
     fun getScheduleDayTest(){
-        assertEquals("Monday", schedule.day)
+        assertEquals("Monday", ts.schedule.day)
     }
 
     // Test: retrieval of tutor schedule start time
     @Test
     fun getScheduleStartTest(){
-        assertEquals("13:00:00", schedule.shiftStart)
+        assertEquals("13:00:00", ts.schedule.shiftStart)
     }
 
     // Test: retrieval of tutor schedule end time
     @Test
     fun getScheduleEndTest(){
-        assertEquals("14:30:00", schedule.shiftEnd)
+        assertEquals("14:30:00", ts.schedule.shiftEnd)
     }
 }

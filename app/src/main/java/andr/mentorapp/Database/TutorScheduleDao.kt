@@ -33,8 +33,8 @@ interface TutorScheduleDao {
      * @param tutorId               id of tutor to get schedules for
      * @return List<TutorSchedule>  all schedules for the tutorId in the db
      */
-    @Query("SELECT * FROM tutor_schedule WHERE tutorId IS :tutorId")
-    fun findTutorSchedulesByIdFromdDB(tutorId : String) : List<TutorSchedule>
+    @Query("SELECT day, shiftStart, shiftEnd FROM tutor_schedule WHERE tutorId IS :tutorId")
+    fun findTutorSchedulesByIdFromdDB(tutorId : String) : List<Schedule>
 
     /**
      * Insert new TutorSchedule into db

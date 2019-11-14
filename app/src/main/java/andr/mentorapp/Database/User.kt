@@ -3,6 +3,7 @@ package andr.mentorapp
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.room.Embedded
 import java.lang.Class
 import androidx.room.Entity
 import androidx.room.PrimaryKey

@@ -117,19 +117,23 @@ class DatabaseManager {
         /**
          * Get all schedules associated with user id in db
          *
-         * @return List<TutorSchedules>     all schedules for user retrieved from db
+         * @return List<Schedule>     all schedules for user retrieved from db
          */
-        fun getSchedulesByTutorId(id: String) : List<TutorSchedule> {
+        fun getSchedulesByTutorId(id: String) : List<Schedule> {
             return scheduleDao!!.findTutorSchedulesByIdFromdDB(id)
         }
 
         /**
          * Add new TutorSchedule to db
          *
-         * @param schedule     TutorSchedule to add to db
+         * @param tutorId      String of tutor ID to add schedule for
+         * @param schedule     Schedule to add for tutor
          */
-        fun insertTutorSchedule(schedule: TutorSchedule) {
-            scheduleDao!!.insert(schedule)
+        fun insertTutorSchedule(tutorId: String, schedule: Schedule) {
+            var user = userDao!!.findUserByIdFromdDB(tutorId)
+            if (user != null) {
+                var tutorSchedule = TutorSchedule(tutorId, schedule)
+                scheduleDao!!.insert(tutorSchedule)            }
         }
 
         /**
@@ -188,10 +192,12 @@ class DatabaseManager {
 
          /** Delete TutorSchedule from db
          *
+         * @param tutorId      String of tutor ID to delete schedule for
          * @param schedule     TutorSchedule to delete from db
          */
-        fun deleteTutorSchedule(schedule: TutorSchedule) {
-            scheduleDao!!.delete(schedule)
+        fun deleteTutorSchedule(tutorId: String, schedule: Schedule) {
+            var tutorSchedule = TutorSchedule(tutorId, schedule)
+            scheduleDao!!.delete(tutorSchedule)
         }
 
         /**

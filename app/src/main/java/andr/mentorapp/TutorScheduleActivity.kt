@@ -1,6 +1,7 @@
 package andr.mentorapp
 
 import andr.mentorapp.Database.DatabaseManager
+import andr.mentorapp.Database.Schedule
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -132,8 +133,8 @@ class TutorScheduleActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if(requestCode == GET_NEW_SCHEDULE_RESULT && resultCode == Activity.RESULT_OK && data != null){ // from the Add Button
             DatabaseManager.insertTutorSchedule(
-                TutorSchedule(
-                    intent.getStringExtra("tutorId"),
+                intent.getStringExtra("tutorId"),
+                Schedule(
                     data.getStringExtra("day"),
                     data.getStringExtra("start"),
                     data.getStringExtra("end")))
