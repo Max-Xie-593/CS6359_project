@@ -186,7 +186,7 @@ class DatabaseManager {
             courseDao!!.insert(course)
         }
 
-         * Delete TutorSchedule from db
+         /** Delete TutorSchedule from db
          *
          * @param schedule     TutorSchedule to delete from db
          */
