@@ -29,4 +29,21 @@ interface CourseDao {
      */
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(course: Course)
+
+    /**
+     * Delete course from db
+     *
+     * @param course    Course to remove from db
+     */
+    @Delete
+    fun delete(course: Course)
+
+    /**
+     * get Course from db using the given courseId
+     *
+     * @param courseId courseId to use
+     */
+    @Query("SELECT * from course WHERE courseId IS :courseId")
+    fun getCourseById(courseId: String): Course
+
 }

@@ -387,6 +387,104 @@ class DatabaseManagerTest {
         Assert.assertEquals(tutorSchedules.size, 0)
     }
 
+    // Test: inserts 0 courses and checks if all of them exists
+    @Test
+    fun insertCourseTest0() {
+        val courses = DatabaseManager.getAllCourses()
+        Assert.assertEquals(courses.size,0)
+    }
+
+    // Test: inserts 1 courses and checks if all of them exists
+    @Test
+    fun insertCourseTest1() {
+        addCourse("cs6359","OOAD")
+        val courses = DatabaseManager.getAllCourses()
+        Assert.assertEquals(courses.size,1)
+        Assert.assertEquals(courses[0].courseId,"cs6359")
+        Assert.assertEquals(courses[0].courseName,"OOAD")
+    }
+
+    // Test: inserts 3 courses and checks if all of them exists
+    @Test
+    fun insertCourseTest3() {
+        addCourse("cs6359","OOAD")
+        addCourse("cs6375","ML")
+        addCourse("cs6363","Algs")
+        val courses = DatabaseManager.getAllCourses()
+        Assert.assertEquals(courses.size,3)
+        Assert.assertEquals(courses[0].courseId,"cs6359")
+        Assert.assertEquals(courses[0].courseName,"OOAD")
+        Assert.assertEquals(courses[1].courseId,"cs6375")
+        Assert.assertEquals(courses[1].courseName,"ML")
+        Assert.assertEquals(courses[2].courseId,"cs6363")
+        Assert.assertEquals(courses[2].courseName,"Algs")
+    }
+
+    // Test: tests the deletecourse function
+    @Test
+    fun deleteCourseTest() {
+        val course = Course("cs6359","OOAD")
+        DatabaseManager.insertCourse(course)
+        Assert.assertEquals(DatabaseManager.getCoursebyId("cs6359").courseId,"OOAD")
+
+        DatabaseManager.deleteCourse(course)
+        Assert.assertEquals(DatabaseManager.getAllCourses(),0)
+    }
+
+    // Test: inserts nothing into the TutorCourseJoin Table and checks if there is nothing
+    @Test
+    fun insertTutorCourseJoinTest0() {
+        val tutorCourseTeach = DatabaseManager.getAllTutorCourseJoins()
+        Assert.assertEquals(tutorCourseTeach.size,0)
+    }
+
+    // Test: inserts 1 tutorCourseJoin entry and checks if all of them exist
+    @Test
+    fun insertTutorCourseJoinTest1() {
+        addTutor("tu","tu")
+        addCourse("cs6359","OOAD")
+        addTutorCourseJoin("tu","cs6359")
+
+        val tutorCourseTeach = DatabaseManager.getAllTutorCourseJoins()
+        Assert.assertEquals(tutorCourseTeach.size,1)
+        Assert.assertEquals(tutorCourseTeach[0].tutorId,"tu")
+        Assert.assertEquals(tutorCourseTeach[0].courseId,"cs6359")
+    }
+
+    // Test: inserts 3 tutorCourseJoin entries and checks if all of them exist
+    @Test
+    fun insertTutorCourseJoinTest3() {
+        addTutor("tu","tu")
+        addCourse("cs6359","OOAD")
+        addCourse("cs6375","ML")
+        addCourse("cs6363","Algs")
+        addTutorCourseJoin("tu","cs6359")
+        addTutorCourseJoin("tu","cs6375")
+        addTutorCourseJoin("tu","cs6363")
+        val tutorCourseTeach = DatabaseManager.getAllTutorCourseJoins()
+        Assert.assertEquals(tutorCourseTeach.size,3)
+        Assert.assertEquals(tutorCourseTeach[0].tutorId,"tu")
+        Assert.assertEquals(tutorCourseTeach[0].courseId,"cs6359")
+        Assert.assertEquals(tutorCourseTeach[1].tutorId,"tu")
+        Assert.assertEquals(tutorCourseTeach[1].courseId,"cs6375")
+        Assert.assertEquals(tutorCourseTeach[2].tutorId,"tu")
+        Assert.assertEquals(tutorCourseTeach[2].courseId,"cs6363")
+    }
+
+    // Tests the delete function of the TutorCourseJoin table
+    @Test
+    fun deleteTutorCourseJoin() {
+        addTutor("tu","tu")
+        addCourse("cs6359","OOAD")
+        val tutorCourseJoinHold = TutorCourseJoin("tu","cs6359")
+        DatabaseManager.insertTutorCourseJoin(tutorCourseJoinHold)
+        Assert.assertEquals(DatabaseManager.getCoursefromTutorCourseJoin("tu","cs6359").tutorId,"tu")
+        Assert.assertEquals(DatabaseManager.getCoursefromTutorCourseJoin("tu","cs6359").courseId,"cs6359")
+
+        DatabaseManager.deleteTutorCourseJoin(tutorCourseJoinHold)
+        Assert.assertEquals(DatabaseManager.getAllTutorCourseJoins(),0)
+    }
+
     /**
      * Helper function to add student
      * @param id        String id of student
@@ -427,5 +525,23 @@ class DatabaseManagerTest {
      */
     private fun addSchedule(id: String, day: String, start: String, end: String) {
         DatabaseManager.insertTutorSchedule(id, Schedule(day, start, end))
+    }
+
+    /**
+     * Helper function to add Course
+     * @param id        String id of course
+     * @param name      String name of Course
+     */
+    private fun addCourse(id: String, name: String) {
+        DatabaseManager.insertCourse(Course(id,name))
+    }
+
+    /**
+     * Helper function to add TutorCourseJoin
+     * @param tutorId   String id of tutor
+     * @param courseId  String id of course
+     */
+    private fun addTutorCourseJoin(tutorId: String,courseId:String) {
+        DatabaseManager.insertTutorCourseJoin(TutorCourseJoin(tutorId,courseId))
     }
 }

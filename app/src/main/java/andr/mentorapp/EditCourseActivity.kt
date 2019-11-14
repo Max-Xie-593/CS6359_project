@@ -65,13 +65,13 @@ class EditCourseActivity : AppCompatActivity() {
             row.addView(courseName,0)
 
             //TODO: fix everything to use TutorCourseJoin instead of TutorCourses
-//            val deleteCourseButton = Button(context) // create the delete button to remove the course if needed
-//            deleteCourseButton.text = "DELETE"
-//            deleteCourseButton.setOnClickListener {
-//                DatabaseManager.deleteCourse(courseName) // delete the course from the database
-//                recreate() // update the screen
-//            }
-//            row.addView(deleteCourseButton,1)
+            val deleteCourseButton = Button(context) // create the delete button to remove the course if needed
+            deleteCourseButton.text = "DELETE"
+            deleteCourseButton.setOnClickListener {
+                DatabaseManager.deleteTutorCourseJoin(DatabaseManager.getCoursefromTutorCourseJoin(intent.getStringExtra("tutorId"),course.courseId)) // delete the course from the database
+                recreate() // update the screen
+            }
+            row.addView(deleteCourseButton,1)
             courseListTable.addView(row)
         }
     }
@@ -93,7 +93,7 @@ class EditCourseActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if(requestCode == GET_NEW_COURSE_RESULT && resultCode == Activity.RESULT_OK && data != null) {
             GlobalScope.launch {
-                DatabaseManager.insertTutorCourse(TutorCourses(data.getStringExtra("tutorId"),data.getStringExtra("courseName")))
+                DatabaseManager.insertTutorCourseJoin(data.getStringExtra("tutorId"),data.getStringExtra("courseId"))
             }
             recreate()
         }

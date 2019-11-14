@@ -13,7 +13,6 @@ class DatabaseManager {
     companion object {
         private var userDao : UserDao? = null
         private var scheduleDao : TutorScheduleDao? = null
-        private var coursesDao : TutorCoursesDao? = null
         private var courseDao : CourseDao? = null
         private var tutorCourseJoinDao : TutorCourseJoinDao? = null
 
@@ -26,7 +25,6 @@ class DatabaseManager {
             val db = MentorAppDatabase.invoke(context)
             userDao = db.userDao()
             scheduleDao = db.tutorScheduleDao()
-            coursesDao = db.tutorCoursesDao()
             courseDao = db.courseDao()
             tutorCourseJoinDao = db.tutorCourseJoinDao()
         }
@@ -108,7 +106,7 @@ class DatabaseManager {
         /**
          * Get all tutor schedules in db
          *
-         * @return List<TutorSchedule>     all schedules retrieved from db
+         * @return List<TutorSchedule> all schedules retrieved from db
          */
         fun getAllTutorSchedules() : List<TutorSchedule> {
             return scheduleDao!!.getAll()
@@ -137,23 +135,13 @@ class DatabaseManager {
         }
 
         /**
-
-         * Get all TutorCourses from the database
+         * Get all TutorCourseJoin entries from the database
          *
-         * @return List<TutorCourses> List of all the TutorCourses
+         * @return List<TutorCoursesJoin> List of all the TutorCourses
          */
-        fun getAllTutorCourses() : List<TutorCourses> {
-            return coursesDao!!.getAll()
+        fun getAllTutorCourseJoins() : List<TutorCourseJoin> {
+            return tutorCourseJoinDao!!.getAll()
         }
-
-        /**
-         * get all TutorCourses from the database with the given id
-         *
-         * @return List<TutorCourses> List of all the courses the tutor with the id can teach
-         */
-//        fun getCoursesByTutorId(id: String) : List<TutorCourses> {
-//            return coursesDao!!.findTutorCoursesByIdFromDB(id)
-//        }
 
         /**
          * get all TutorCourseJoins from the database with the given id
@@ -165,32 +153,74 @@ class DatabaseManager {
         }
 
         /**
-         * insert a new TutorCourse into the database
+         * grab the course from the TutorCourseJoin Table using the given tutorId and courseId
          *
-         * @param course new TutorCourse to add into the database
+         * @param tutorId Id of tutor to grab in the Table
+         * @param courseId id of course to grab in the Table
+         * @return TutorCourseJoin Object that contains both tutorId and courseId
          */
-        fun insertTutorCourse(course: TutorCourses) {
-            coursesDao!!.insert(course)
+        fun getCoursefromTutorCourseJoin(tutorId: String,courseId: String) : TutorCourseJoin {
+            return tutorCourseJoinDao!!.findTutorCoursesByIdFromDB(tutorId, courseId)
         }
 
         /**
-         * delete a TutorCourse from the database
+         * insert a new TutorCourseJoin the database using the tutorId and courseId
          *
-         * @param courses TutorCourse to remove from the database
+         * @param tutorId id to use to create the tutorCourseJoin Object
+         * @param courseId id to use to create the tutorCourseJoin Object
          */
-        fun deleteCourse(courses: TutorCourses) {
-            coursesDao!!.delete(courses)
+        fun insertTutorCourseJoin(tutorId: String,courseId: String) {
+            tutorCourseJoinDao!!.insert(TutorCourseJoin(tutorId,courseId))
         }
 
+        /**
+         * delete a TutorCourseJoin from the database
+         *
+         * @param course TutorCourseJoin to remove from the database
+         */
+        fun deleteTutorCourseJoin(course: TutorCourseJoin) {
+            tutorCourseJoinDao!!.delete(course)
+        }
+
+        /**
+         * gets all the courses from the Course Table
+         * 
+         * @return List<Course> List of all the Courses
+         */
         fun getAllCourses() : List<Course> {
             return courseDao!!.getAll()
         }
 
+
+        /**
+         * inserts a course into the Course Table
+         *
+         * @param course course to insert into the Course Table
+         */
         fun insertCourse(course: Course) {
             courseDao!!.insert(course)
         }
 
-         /** Delete TutorSchedule from db
+        /**
+         * deletes a course from the Course Table
+         *
+         * @param course Course to delete from the Course Table
+         */
+        fun deleteCourse(course: Course) {
+            courseDao!!.delete(course)
+        }
+
+        /**
+         * finds a course from the Course Table with the given courseID
+         *
+         * @param id    String id of course to find in Course Table
+         * @return Course Object to return with the given id
+         */
+        fun getCoursebyId(id: String): Course {
+            return courseDao!!.getCourseById(id)
+        }
+
+        /** Delete TutorSchedule from db
          *
          * @param tutorId      String of tutor ID to delete schedule for
          * @param schedule     TutorSchedule to delete from db
