@@ -20,6 +20,9 @@ interface CourseDao {
     @Query("SELECT * FROM course")
     fun getAll() : List<Course>
 
+    @Query("SELECT * FROM course WHERE courseId IS :courseId")
+    fun findCourseByIdFromDB(courseId : String) : Course?
+
 
     /**
      * Insert new Course into db

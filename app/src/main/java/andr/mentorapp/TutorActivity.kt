@@ -53,9 +53,9 @@ class TutorActivity : AppCompatActivity() {
                 check_out_button.setVisibility(View.VISIBLE)
                 check_in_button.setVisibility(View.GONE)
               
-                for ((matchTutor, _) in tutorSessions) {
-                    if (matchTutor.userId == tutorUser.userId) {
-                        tutorMessage.setText("You're currently helping " + tutorSessions.get(matchTutor)!!.userName)
+                for (session in tutorSessions) {
+                    if (session.first.userId == tutorUser.userId) {
+                        tutorMessage.setText("You're currently helping " + session.second.userName + " in " + session.third.courseName)
                         check_out_button.setVisibility(View.GONE)
                         tutorDoneButton.setVisibility(View.VISIBLE)
                         break
@@ -95,6 +95,14 @@ class TutorActivity : AppCompatActivity() {
         check_out_button.setVisibility(View.VISIBLE)
 
         addTutor(tutorUser)
+        for (session in tutorSessions) {
+            if (session.first.userId == tutorUser.userId) {
+                tutorMessage.setText("You're currently helping " + session.second.userName + " in " + session.third.courseName)
+                check_out_button.setVisibility(View.GONE)
+                tutorDoneButton.setVisibility(View.VISIBLE)
+                break
+            }
+        }
     }
 
     /**
@@ -135,9 +143,9 @@ class TutorActivity : AppCompatActivity() {
         tutorDoneButton.setVisibility(View.GONE)
         check_out_button.setVisibility(View.VISIBLE)
 
-        for ((matchTutor, _) in tutorSessions) {
-            if (matchTutor.userId == tutorUser.userId) {
-                tutorMessage.setText("Thanks for helping, now you are tutoring " + tutorSessions.get(matchTutor)!!.userName)
+        for (session in tutorSessions) {
+            if (session.first.userId == tutorUser.userId) {
+                tutorMessage.setText("Thanks for helping, now you are tutoring " + session.second.userName + " in " + session.third.courseName)
                 tutorDoneButton.setVisibility(View.VISIBLE)
                 check_out_button.setVisibility(View.GONE)
             }

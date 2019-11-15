@@ -144,13 +144,25 @@ class DatabaseManager {
         }
 
         /**
-         * get all TutorCourseJoins from the database with the given id
+         * Get all courses that the given Tutor is experienced in with user id in db
          *
-         * @return List<TutorCourses> List of all the courses the tutor with the id can teach
+         * @return List<Course>     all courses for tutoruser retrieved from db
          */
         fun getCoursesByTutorId(tutorId: String) : List<Course> {
             return tutorCourseJoinDao!!.getCoursesForTutor(tutorId)
         }
+
+
+        /**
+         * Get all tutors that are experienced in the given course by id in db
+         *
+         * @return List<TutorUser>     all tutors for course retrieved from db
+         */
+        fun getTutorsbyCourseId(courseId: String) : List<TutorUser> {
+            return tutorCourseJoinDao!!.getTutorsForCourse(courseId)
+        }
+
+      
 
         /**
          * grab the course from the TutorCourseJoin Table using the given tutorId and courseId
@@ -191,6 +203,15 @@ class DatabaseManager {
             return courseDao!!.getAll()
         }
 
+        /**
+         * Return course by Id
+         *
+         * @param id        String to find course by
+         * @return Course     retrieved from db
+         */
+        fun getCourseById(id: String) : Course? {
+            return courseDao!!.findCourseByIdFromDB(id)
+        }
 
         /**
          * inserts a course into the Course Table

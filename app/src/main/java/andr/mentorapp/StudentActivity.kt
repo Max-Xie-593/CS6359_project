@@ -61,10 +61,10 @@ class StudentActivity : AppCompatActivity() {
             studentGetHelpButton.setVisibility(View.VISIBLE)
 
             studentUser = DatabaseManager.getUserById(thisStudentID) as StudentUser
-            for ((matchTutor, matchStudent) in tutorSessions) {
+            for (session in tutorSessions) {
 
-                if (matchStudent.userId == studentUser.userId) {
-                    studentMessage.setText("You're getting help from " + matchTutor.userName)
+                if (session.second.userId == studentUser.userId) {
+                    studentMessage.setText("You're getting help from " + session.first.userName + " in " + session.third.courseName)
                     studentGetHelpButton.setVisibility(View.GONE)
                     studentDone.setVisibility(View.VISIBLE)
                     break
@@ -72,8 +72,8 @@ class StudentActivity : AppCompatActivity() {
             }
             var queuePosition = 1
             for (waitingStudent in studentQueue) {
-                if (waitingStudent.userId == studentUser.userId) {
-                    studentMessage.setText("You're in the queue to be helped, position " + queuePosition)
+                if (waitingStudent.first.userId == studentUser.userId) {
+                    studentMessage.setText("You're in the queue to be helped, position " + queuePosition + " for " + waitingStudent.second.courseName)
                     studentGetHelpButton.setVisibility(View.GONE)
                     studentLeaveQueue.setVisibility(View.VISIBLE)
                     break
@@ -86,7 +86,9 @@ class StudentActivity : AppCompatActivity() {
 
 
         studentGetHelpButton.setOnClickListener {
-            this.makeMatch(studentUser)
+            intent.setClass(this, CourseListActivity::class.java)
+            intent.putExtra("studentId", thisStudentID)
+            startActivity(intent)
         }
 
         studentDone.setOnClickListener {
@@ -125,36 +127,6 @@ class StudentActivity : AppCompatActivity() {
 
     }
 
-    /**
-     * This is the function called when the "Get Help" button is clicked
-     *
-     * Calls the matchStudentTutor function from ActivityCommonUtil to pair with a tutor
-     *      if it receives true, the match was successful and we display the tutor's name
-     *      if it receives false, then no tutors were free to be matched with, show message that student was added to queue
-     *
-     * @param studentUser    the object of the student using this page
-     * @return void
-     */
-    fun makeMatch(studentUser: StudentUser) {
-
-        if (matchStudentTutor(studentUser)) {
-            for ((tutor, student) in tutorSessions) {
-                if (student == studentUser) {
-                    studentMessage.setText("You're getting help from " + tutor.userName)
-                    break
-                }
-
-            }
-            studentGetHelpButton.setVisibility(View.GONE)
-            studentDone.setVisibility(View.VISIBLE)
-
-        } else {
-            studentMessage.setText("No tutors are available right now, you are in position " + studentQueue.size + " in the queue")
-            studentGetHelpButton.setVisibility(View.GONE)
-            studentLeaveQueue.setVisibility(View.VISIBLE)
-        }
-
-    }
 
     /**
     * This is the function called when the "Done" button is clicked

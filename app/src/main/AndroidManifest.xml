@@ -70,6 +70,11 @@
                 <action android:name="andr.mentorapp2.ADMIN_ADD_COURSE_ACTIVITY"/>
             </intent-filter>
         </activity>
+        <activity android:name=".CourseListActivity">
+            <intent-filter>
+                <action android:name="andr.mentorapp2.COURSE_LIST_ACTIVITY"/>
+            </intent-filter>
+        </activity>
         <activity android:name=".AddTutorScheduleActivity">
             <intent-filter>
                 <action android:name="andr.mentorapp2.ADMIN_NEW_SCHEDULE"/>
