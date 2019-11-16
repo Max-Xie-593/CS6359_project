@@ -2,13 +2,11 @@ package andr.mentorapp
 
 import andr.mentorapp.Database.StudentUser
 import andr.mentorapp.Database.TutorUser
-import java.util.concurrent.ConcurrentLinkedQueue
-import kotlin.collections.HashSet
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
-import kotlin.collections.HashMap
+import java.util.concurrent.ConcurrentLinkedQueue
 
 /**
  * Begin and commit the transaction
@@ -85,30 +83,30 @@ object GetHelpController{
      * @param student       StudentUser to match with Tutor
      * @return Boolean      true if success, else false
      */
-    fun matchStudentTutor(student: StudentUser, course: Course) : Boolean {
+    fun matchStudentTutor(student: StudentUser, courseGiven: Course) : Boolean {
+        var course = courseGiven
         val expertTutors = availableExpertCourses.get(course.courseId)
-
         val tutor : TutorUser?
+        var tutorStateContext : TutorStateContext = TutorStateContext()
 
-        if (!expertTutors.isNullOrEmpty()) {
-            tutor = firstAvailableTutorForCourse(course)
-            if (tutor !=null) {
-                tutorSessions.add(Triple(tutor, student, course))
-                return true
-            }
-            studentQueue.add(Pair(student, course))
-            return false
+        if (expertTutors.isNullOrEmpty()) {
+            tutor = firstAvailableTutor()
+            course = Course("other", "General Help")
+            if (tutor == null)
+                tutorStateContext.setState(NoExpertCheckedInNoGenTutorAvailState())
+            else
+                tutorStateContext.setState(NoExpertCheckedInGenTutorAvailState())
+
         }
         else {
-            tutor = firstAvailableTutor()
-            val genCourse = Course("other", "General Help")
-            if (tutor !=null) {
-                tutorSessions.add(Triple(tutor, student, genCourse))
-                return true
-            }
-            studentQueue.add(Pair(student, genCourse))
-            return false
+            tutor = firstAvailableTutorForCourse(course)
+            if (tutor == null)
+                tutorStateContext.setState(ExpertCheckedInButNotAvailState())
+            else
+                tutorStateContext.setState(ExpertCheckedInAndAvailState())
         }
+
+        return tutorStateContext.getHelp(tutor, student, course);
     }
 
     /**
