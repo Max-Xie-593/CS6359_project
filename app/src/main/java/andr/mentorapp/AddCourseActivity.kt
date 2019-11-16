@@ -41,8 +41,25 @@ class AddCourseActivity : AppCompatActivity() {
 
         val context = this
         val courses = DatabaseManager.getAllCourses() // retrieves all the courses from the Course Table
+        val expertCourses = DatabaseManager.getCoursesByTutorId(intent.getStringExtra("tutorId"))
+        val displayCourses = arrayListOf<Course>()
+        var dontadd = false
+        for (course in courses)
+        {
+            for (expertCourse in expertCourses){
+                if (expertCourse.courseId == course.courseId){
+                    dontadd = true
+                    break
+                }
+            }
+            if (!dontadd) {
+                displayCourses.add(course)
+            }
+            dontadd = false
 
-        for (course in courses) {
+        }
+
+        for (course in displayCourses) {
             val row = TableRow(context)
             val params = TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT) // set the params for the row
             val courseName = TextView(context)
