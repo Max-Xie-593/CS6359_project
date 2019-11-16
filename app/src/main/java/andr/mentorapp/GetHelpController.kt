@@ -139,6 +139,12 @@ object GetHelpController{
                 if (waitingStudent.second.courseId == "other" || availableExpertCourses.get(waitingStudent.second.courseId)!!.contains(tutor.userId)) {
                     tutorSessions.add(Triple(tutor, waitingStudent.first, waitingStudent.second))
                     studentQueue.remove(waitingStudent);
+                    for (availTutor in availableTutors){
+                        if(availTutor.userId == tutor.userId){
+                            availableTutors.remove(availTutor)
+                            return
+                        }
+                    }
                     return
                 }
             }
