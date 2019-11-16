@@ -425,10 +425,10 @@ class DatabaseManagerTest {
     fun deleteCourseTest() {
         val course = Course("cs6359","OOAD")
         DatabaseManager.insertCourse(course)
-        Assert.assertEquals(DatabaseManager.getCoursebyId("cs6359").courseId,"OOAD")
+        Assert.assertEquals(DatabaseManager.getCoursebyId("cs6359").courseId,"cs6359")
 
         DatabaseManager.deleteCourse(course)
-        Assert.assertEquals(DatabaseManager.getAllCourses(),0)
+        Assert.assertEquals(DatabaseManager.getAllCourses().size,0)
     }
 
     // Test: inserts nothing into the TutorCourseJoin Table and checks if there is nothing
@@ -477,12 +477,13 @@ class DatabaseManagerTest {
         addTutor("tu","tu")
         addCourse("cs6359","OOAD")
         val tutorCourseJoinHold = TutorCourseJoin("tu","cs6359")
-        DatabaseManager.insertTutorCourseJoin(tutorCourseJoinHold)
+
+        DatabaseManager.insertTutorCourseJoin("tu", "cs6359")
         Assert.assertEquals(DatabaseManager.getCoursefromTutorCourseJoin("tu","cs6359").tutorId,"tu")
         Assert.assertEquals(DatabaseManager.getCoursefromTutorCourseJoin("tu","cs6359").courseId,"cs6359")
 
         DatabaseManager.deleteTutorCourseJoin(tutorCourseJoinHold)
-        Assert.assertEquals(DatabaseManager.getAllTutorCourseJoins(),0)
+        Assert.assertEquals(DatabaseManager.getAllTutorCourseJoins().size,0)
     }
 
     /**
@@ -542,6 +543,6 @@ class DatabaseManagerTest {
      * @param courseId  String id of course
      */
     private fun addTutorCourseJoin(tutorId: String,courseId:String) {
-        DatabaseManager.insertTutorCourseJoin(TutorCourseJoin(tutorId,courseId))
+        DatabaseManager.insertTutorCourseJoin(tutorId, courseId)
     }
 }
