@@ -1,11 +1,10 @@
 package andr.mentorapp
 
-import andr.mentorapp.ActivityCommonUtil.checkedInTutors
-import andr.mentorapp.ActivityCommonUtil.finishSession
-import andr.mentorapp.ActivityCommonUtil.leaveQueue
-import andr.mentorapp.ActivityCommonUtil.matchStudentTutor
-import andr.mentorapp.ActivityCommonUtil.studentQueue
-import andr.mentorapp.ActivityCommonUtil.tutorSessions
+import andr.mentorapp.GetHelpController.checkedInTutors
+import andr.mentorapp.GetHelpController.finishSession
+import andr.mentorapp.GetHelpController.leaveQueue
+import andr.mentorapp.GetHelpController.studentQueue
+import andr.mentorapp.GetHelpController.tutorSessions
 import andr.mentorapp.Database.DatabaseManager
 import andr.mentorapp.Database.StudentUser
 import android.os.Bundle
@@ -105,7 +104,7 @@ class StudentActivity : AppCompatActivity() {
     /**
      * This is the function called when the "Leave Queue" button is clicked
      *
-     * Calls the leaveQueue function from ActivityCommonUtil to edit the queue
+     * Calls the leaveQueue function from GetHelpController to edit the queue
      *      if it receives true, the removal was successful and we change back to the home view
      *      if it receives false, the removal was not successful, display an error message
      *
@@ -131,7 +130,7 @@ class StudentActivity : AppCompatActivity() {
     /**
     * This is the function called when the "Done" button is clicked
     *
-    * Calls the finishSession function from ActivityCommonUtil to end the session
+    * Calls the finishSession function from GetHelpController to end the session
     * and displays the home page view again
     *
     * @param studentUser    the object of the student using this page

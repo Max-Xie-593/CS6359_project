@@ -1,11 +1,9 @@
 package andr.mentorapp
 
-import andr.mentorapp.ActivityCommonUtil.addTutor
-import andr.mentorapp.ActivityCommonUtil.availableTutors
-import andr.mentorapp.ActivityCommonUtil.checkedInTutors
-import andr.mentorapp.ActivityCommonUtil.finishSession
-import andr.mentorapp.ActivityCommonUtil.removeTutor
-import andr.mentorapp.ActivityCommonUtil.tutorSessions
+import andr.mentorapp.GetHelpController.availableTutors
+import andr.mentorapp.GetHelpController.checkedInTutors
+import andr.mentorapp.GetHelpController.finishSession
+import andr.mentorapp.GetHelpController.tutorSessions
 import andr.mentorapp.Database.DatabaseManager
 import andr.mentorapp.Database.TutorUser
 import android.os.Bundle
@@ -118,6 +116,7 @@ class TutorActivity : AppCompatActivity() {
                 check_out_button.setVisibility(View.GONE)
 
                 tutorMessage.setText("You are now checked out, " + tutorUser.userName + "!")
+                break
             } else {
                 tutorMessage.setText("Cannot checkout while helping someone")
             }
@@ -128,7 +127,7 @@ class TutorActivity : AppCompatActivity() {
     /**
     * This is the function called when the "Done" button is clicked
     *
-    * Calls the finishSession function from ActivityCommonUtil to end the session
+    * Calls the finishSession function from GetHelpController to end the session
     *
     * Check if the tutor has been matched with a new student off the queue
     *   and if so, stay on the "helping" view page
@@ -148,6 +147,48 @@ class TutorActivity : AppCompatActivity() {
                 tutorMessage.setText("Thanks for helping, now you are tutoring " + session.second.userName + " in " + session.third.courseName)
                 tutorDoneButton.setVisibility(View.VISIBLE)
                 check_out_button.setVisibility(View.GONE)
+            }
+        }
+    }
+
+    /**
+     * Tutor is checking in and must be noted as checked in and available
+     *
+     * @param tutorUser       TutorUser to add
+     * @return void
+     */
+    fun addTutor(tutorUser: TutorUser) {
+
+        checkedInTutors.add(tutorUser)
+        availableTutors.add(tutorUser)
+        val expertCourses = DatabaseManager.getCoursesByTutorId(tutorUser.userId)
+        for (course in expertCourses) {
+            val tutorQueue = GetHelpController.availableExpertCourses.getOrDefault(course.courseId, HashSet())
+            tutorQueue.add(tutorUser.userId)
+            GetHelpController.availableExpertCourses.put(course.courseId, tutorQueue)
+        }
+        GetHelpController.updateQueue(tutorUser)
+    }
+
+    /**
+     * Tutor is checking out and must be noted as checked out and not available
+     *
+     * @param tutorUser       TutorUser to remove
+     * @return void
+     */
+    fun removeTutor(tutorUser: TutorUser) {
+
+        for(availableTutor in availableTutors) {
+            if (availableTutor.userId == tutorUser.userId) {
+                availableTutors.remove(availableTutor)
+                checkedInTutors.remove(availableTutor)
+                val expertCourses = DatabaseManager.getCoursesByTutorId(availableTutor.userId)
+                for (course in expertCourses) {
+                    val tutorQueue = GetHelpController.availableExpertCourses.getOrDefault(course.courseId, HashSet())
+                    tutorQueue.remove(tutorUser.userId)
+                    GetHelpController.availableExpertCourses.put(course.courseId, tutorQueue)
+                }
+                return
             }
         }
     }

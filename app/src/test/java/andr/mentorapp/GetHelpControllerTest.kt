@@ -4,30 +4,32 @@ import andr.mentorapp.Database.StudentUser
 import andr.mentorapp.Database.TutorUser
 import org.junit.Test
 import org.junit.Assert.*
-import andr.mentorapp.ActivityCommonUtil.addTutor
-import andr.mentorapp.ActivityCommonUtil.availableTutors
-import andr.mentorapp.ActivityCommonUtil.checkedInTutors
-import andr.mentorapp.ActivityCommonUtil.studentQueue
-import andr.mentorapp.ActivityCommonUtil.tutorSessions
-import andr.mentorapp.ActivityCommonUtil.finishSession
-import andr.mentorapp.ActivityCommonUtil.firstAvailableTutor
-import andr.mentorapp.ActivityCommonUtil.leaveQueue
-import andr.mentorapp.ActivityCommonUtil.matchStudentTutor
-import andr.mentorapp.ActivityCommonUtil.removeTutor
+import andr.mentorapp.GetHelpController.availableTutors
+import andr.mentorapp.GetHelpController.checkedInTutors
+import andr.mentorapp.GetHelpController.studentQueue
+import andr.mentorapp.GetHelpController.tutorSessions
+import andr.mentorapp.GetHelpController.finishSession
+import andr.mentorapp.GetHelpController.firstAvailableTutor
+import andr.mentorapp.GetHelpController.leaveQueue
+import andr.mentorapp.GetHelpController.matchStudentTutor
 import org.junit.Before
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 
 /**
- * Class to test the ActivityCommonUtil
+ * Class to test the GetHelpController
  *
  * @author Courtney Erbes
  * @date 10/25/19
  */
-class ActivityCommonUtilTest {
+@RunWith(RobolectricTestRunner::class)
+class GetHelpControllerTest {
     val id = "newtutor"
     val stuId = "newstudent"
     val name = "New"
     val tutor = TutorUser(id, name)
     val student = StudentUser(stuId, name)
+    var tutAct = TutorActivity()
 
     // Before each test, make sure queues, hashset and hashmap are empty
     @Before
@@ -47,7 +49,7 @@ class ActivityCommonUtilTest {
     // Test: return tutor if tutor  available
     @Test
     fun firstAvailableTutorNotNull() {
-        addTutor(tutor)
+        tutAct.addTutor(tutor)
         assertEquals(firstAvailableTutor(), tutor)
 
         assert(checkedInTutors.contains(tutor))
@@ -64,7 +66,7 @@ class ActivityCommonUtilTest {
     // Test: student and tutor matched when tutor available
     @Test
     fun matchStudentTutorTrue() {
-        addTutor(tutor)
+        tutAct.addTutor(tutor)
 
         assert(matchStudentTutor(student))
         assertEquals(tutorSessions.get(tutor), student)
@@ -78,7 +80,7 @@ class ActivityCommonUtilTest {
         val newId = "stu2"
         val student2 = StudentUser(newId, name)
 
-        addTutor(tutor)
+        tutAct.addTutor(tutor)
         matchStudentTutor(student)
         matchStudentTutor(student2)
         finishSession(tutor)
@@ -89,7 +91,7 @@ class ActivityCommonUtilTest {
     // Test: finish session and tutor doesn't match anyone
     @Test
     fun finishSessionEmptyQueue() {
-        addTutor(tutor)
+        tutAct.addTutor(tutor)
         matchStudentTutor(student)
         finishSession(tutor)
 
@@ -111,24 +113,5 @@ class ActivityCommonUtilTest {
 
         assert(leaveQueue(student))
         assert(!studentQueue.contains(student))
-    }
-
-    // Test: check in tutor to system
-    @Test
-    fun testCheckInTutor() {
-        addTutor(tutor)
-
-        assert(checkedInTutors.contains(tutor))
-        assert(availableTutors.contains(tutor))
-    }
-
-    // Test: check out tutor from system
-    @Test
-    fun testCheckOutTutor() {
-        addTutor(tutor)
-        removeTutor(tutor)
-
-        assert(!checkedInTutors.contains(tutor))
-        assert(!availableTutors.contains(tutor))
     }
 }

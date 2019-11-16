@@ -1,6 +1,6 @@
 package andr.mentorapp
 
-import andr.mentorapp.ActivityCommonUtil.matchStudentTutor
+import andr.mentorapp.GetHelpController.matchStudentTutor
 import andr.mentorapp.Database.DatabaseManager
 import andr.mentorapp.Database.DatabaseManager.Companion.getUserById
 import andr.mentorapp.Database.StudentUser

@@ -1,6 +1,5 @@
 package andr.mentorapp
 
-import andr.mentorapp.Database.DatabaseManager.Companion.getCoursesByTutorId
 import andr.mentorapp.Database.StudentUser
 import andr.mentorapp.Database.TutorUser
 import java.util.concurrent.ConcurrentLinkedQueue
@@ -38,7 +37,7 @@ fun AppCompatActivity.addFragment(frameId: Int, fragment: Fragment){
  * @author Nymisha Jahagirdar
  * @date 10/14/19
  */
-object ActivityCommonUtil{
+object GetHelpController{
     var checkedInTutors = HashSet<TutorUser>() // set of checked in tutors
     var availableTutors = ConcurrentLinkedQueue<TutorUser>() // queue of available tutors
     var studentQueue = ConcurrentLinkedQueue<Pair<StudentUser, Course>>() // queue of waiting students with the course they're looking for
@@ -162,47 +161,5 @@ object ActivityCommonUtil{
             }
         }
         return false
-    }
-
-    /**
-     * Tutor is checking in and must be noted as checked in and available
-     *
-     * @param tutorUser       TutorUser to add
-     * @return void
-     */
-    fun addTutor(tutorUser: TutorUser) {
-
-        checkedInTutors.add(tutorUser)
-        availableTutors.add(tutorUser)
-        val expertCourses = getCoursesByTutorId(tutorUser.userId)
-        for (course in expertCourses) {
-            val tutorQueue = availableExpertCourses.getOrDefault(course.courseId, HashSet())
-            tutorQueue.add(tutorUser.userId)
-            availableExpertCourses.put(course.courseId, tutorQueue)
-        }
-        updateQueue(tutorUser)
-    }
-
-    /**
-     * Tutor is checking out and must be noted as checked out and not available
-     *
-     * @param tutorUser       TutorUser to remove
-     * @return void
-     */
-    fun removeTutor(tutorUser: TutorUser) {
-
-        for(availableTutor in availableTutors) {
-            if (availableTutor.userId == tutorUser.userId) {
-                availableTutors.remove(availableTutor)
-                checkedInTutors.remove(availableTutor)
-                val expertCourses = getCoursesByTutorId(availableTutor.userId)
-                for (course in expertCourses) {
-                    val tutorQueue = availableExpertCourses.getOrDefault(course.courseId, HashSet())
-                    tutorQueue.remove(tutorUser.userId)
-                    availableExpertCourses.put(course.courseId, tutorQueue)
-                }
-                return
-            }
-        }
     }
 }
