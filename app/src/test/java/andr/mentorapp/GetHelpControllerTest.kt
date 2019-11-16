@@ -1,7 +1,9 @@
 package andr.mentorapp
 
+import andr.mentorapp.Database.DatabaseManager
 import andr.mentorapp.Database.StudentUser
 import andr.mentorapp.Database.TutorUser
+import andr.mentorapp.GetHelpController.availableExpertCourses
 import org.junit.Test
 import org.junit.Assert.*
 import andr.mentorapp.GetHelpController.availableTutors
@@ -10,8 +12,12 @@ import andr.mentorapp.GetHelpController.studentQueue
 import andr.mentorapp.GetHelpController.tutorSessions
 import andr.mentorapp.GetHelpController.finishSession
 import andr.mentorapp.GetHelpController.firstAvailableTutor
+import andr.mentorapp.GetHelpController.firstAvailableTutorForCourse
 import andr.mentorapp.GetHelpController.leaveQueue
 import andr.mentorapp.GetHelpController.matchStudentTutor
+import android.content.Context
+import androidx.test.core.app.ApplicationProvider
+import org.junit.After
 import org.junit.Before
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -26,9 +32,12 @@ import org.robolectric.RobolectricTestRunner
 class GetHelpControllerTest {
     val id = "newtutor"
     val stuId = "newstudent"
+    val courseId = "cs100"
+    val courseName = "Computer Science I"
     val name = "New"
     val tutor = TutorUser(id, name)
     val student = StudentUser(stuId, name)
+    val course = Course(courseId, name)
     var tutAct = TutorActivity()
 
     // Before each test, make sure queues, hashset and hashmap are empty
@@ -38,6 +47,16 @@ class GetHelpControllerTest {
         availableTutors.clear()
         studentQueue.clear()
         tutorSessions.clear()
+        availableExpertCourses.clear()
+        MentorAppDatabase.TEST_MODE = true
+        var context = ApplicationProvider.getApplicationContext<Context>()
+        DatabaseManager.init(context)
+    }
+
+    @After
+    fun after() {
+        var context = ApplicationProvider.getApplicationContext<Context>()
+        MentorAppDatabase.invoke(context).close()
     }
 
     // Test: if no available tutors, return null
@@ -56,11 +75,31 @@ class GetHelpControllerTest {
         assert(!availableTutors.contains(tutor))
     }
 
+    // Test: if no available tutors for course, return null
+    @Test
+    fun firstAvailableTutorForCourseNull() {
+        assertNull(firstAvailableTutorForCourse(course))
+    }
+
+    // Test: return tutor if tutor available for course
+    @Test
+    fun firstAvailableTutorForCourseNotNull() {
+
+        val tutors = HashSet<String>()
+        tutors.add(tutor.userId)
+        availableExpertCourses.put(courseId, tutors)
+        tutAct.addTutor(tutor)
+        assertEquals(firstAvailableTutorForCourse(course), tutor)
+
+        assert(checkedInTutors.contains(tutor))
+        assert(!availableTutors.contains(tutor))
+    }
+
     // Test: student and tutor not matched when none available
     @Test
     fun matchStudentTutorFalse() {
-        assert(!matchStudentTutor(student))
-        assert(studentQueue.contains(student))
+        assert(!matchStudentTutor(student, course))
+        assert(studentQueue.contains(Pair(student,course)))
     }
 
     // Test: student and tutor matched when tutor available
@@ -68,8 +107,8 @@ class GetHelpControllerTest {
     fun matchStudentTutorTrue() {
         tutAct.addTutor(tutor)
 
-        assert(matchStudentTutor(student))
-        assertEquals(tutorSessions.get(tutor), student)
+        assert(matchStudentTutor(student, course))
+        assert(tutorSessions.contains(Triple(tutor,student, course)))
         assert(checkedInTutors.contains(tutor))
         assert(!availableTutors.contains(tutor))
     }
@@ -81,23 +120,46 @@ class GetHelpControllerTest {
         val student2 = StudentUser(newId, name)
 
         tutAct.addTutor(tutor)
-        matchStudentTutor(student)
-        matchStudentTutor(student2)
+        matchStudentTutor(student, course)
+        matchStudentTutor(student2, course)
         finishSession(tutor)
 
-        assertEquals(tutorSessions.get(tutor), student2)
+        assert(tutorSessions.contains(Triple(tutor,student2, course)))
     }
 
     // Test: finish session and tutor doesn't match anyone
     @Test
     fun finishSessionEmptyQueue() {
         tutAct.addTutor(tutor)
-        matchStudentTutor(student)
+        matchStudentTutor(student, course)
         finishSession(tutor)
-
-        assertNull(tutorSessions.get(tutor))
-        assert(!tutorSessions.contains(tutor))
+        assert(!tutorSessions.contains(Triple(tutor,student, course)))
         assert(availableTutors.contains(tutor))
+    }
+
+    // Test: tutor finished a session, but queue is empty so no need to update
+    @Test
+    fun updateQueueEmpty() {
+        tutAct.addTutor(tutor)
+        matchStudentTutor(student, course)
+        finishSession(tutor)
+        assert(!tutorSessions.contains(Triple(tutor,student, course)))
+        assert(availableTutors.contains(tutor))
+    }
+
+    // Test: tutor finished a session, tutor gets matched with a student off the queue
+    @Test
+    fun updateQueueNotEmpty() {
+        val newId = "stu2"
+        val student2 = StudentUser(newId, name)
+        tutAct.addTutor(tutor)
+        matchStudentTutor(student, course)
+        matchStudentTutor(student2, course)
+
+        assert(studentQueue.contains(Pair(student2,course)))
+        finishSession(tutor)
+        assert(tutorSessions.contains(Triple(tutor,student2, course)))
+        assert(!availableTutors.contains(tutor))
     }
 
     // Test: student doesn't leave queue since not in queue
@@ -109,9 +171,9 @@ class GetHelpControllerTest {
     // Test: student leaves queue successfully
     @Test
     fun leaveQueueTrue() {
-        matchStudentTutor(student)
+        matchStudentTutor(student, course)
 
         assert(leaveQueue(student))
-        assert(!studentQueue.contains(student))
+        assert(!studentQueue.contains(Pair(student,course)))
     }
 }
