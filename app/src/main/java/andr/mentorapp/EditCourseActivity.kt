@@ -96,6 +96,7 @@ class EditCourseActivity : AppCompatActivity() {
                 DatabaseManager.insertTutorCourseJoin(data.getStringExtra("tutorId"),data.getStringExtra("courseId"))
             }
             recreate()
+            recreate()
         }
     }
 }
