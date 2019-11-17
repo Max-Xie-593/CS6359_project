@@ -32,12 +32,12 @@ import org.robolectric.RobolectricTestRunner
 class GetHelpControllerTest {
     val id = "newtutor"
     val stuId = "newstudent"
-    val courseId = "cs100"
+    val courseId = "cs1200"
     val courseName = "Computer Science I"
     val name = "New"
     val tutor = TutorUser(id, name)
     val student = StudentUser(stuId, name)
-    val course = Course(courseId, name)
+    val course = Course(courseId, courseName)
     var tutAct = TutorActivity()
 
     // Before each test, make sure queues, hashset and hashmap are empty
@@ -98,6 +98,10 @@ class GetHelpControllerTest {
     // Test: student and tutor not matched when none available
     @Test
     fun matchStudentTutorFalse() {
+        val tutors = HashSet<String>()
+        tutors.add(tutor.userId)
+        availableExpertCourses.put(courseId, tutors)
+
         assert(!matchStudentTutor(student, course))
         assert(studentQueue.contains(Pair(student,course)))
     }
@@ -105,12 +109,15 @@ class GetHelpControllerTest {
     // Test: student and tutor matched when tutor available
     @Test
     fun matchStudentTutorTrue() {
+        val tutors = HashSet<String>()
+        tutors.add(tutor.userId)
+        availableExpertCourses.put(courseId, tutors)
         tutAct.addTutor(tutor)
 
         assert(matchStudentTutor(student, course))
-        assert(tutorSessions.contains(Triple(tutor,student, course)))
         assert(checkedInTutors.contains(tutor))
         assert(!availableTutors.contains(tutor))
+        assert(tutorSessions.contains(Triple(tutor,student, course)))
     }
 
     // Test: finish session and match tutor with waiting student
@@ -118,7 +125,10 @@ class GetHelpControllerTest {
     fun finishSessionStudentInQueue() {
         val newId = "stu2"
         val student2 = StudentUser(newId, name)
+        val tutors = HashSet<String>()
 
+        tutors.add(tutor.userId)
+        availableExpertCourses.put(courseId, tutors)
         tutAct.addTutor(tutor)
         matchStudentTutor(student, course)
         matchStudentTutor(student2, course)
@@ -152,6 +162,10 @@ class GetHelpControllerTest {
     fun updateQueueNotEmpty() {
         val newId = "stu2"
         val student2 = StudentUser(newId, name)
+        val tutors = HashSet<String>()
+
+        tutors.add(tutor.userId)
+        availableExpertCourses.put(courseId, tutors)
         tutAct.addTutor(tutor)
         matchStudentTutor(student, course)
         matchStudentTutor(student2, course)
