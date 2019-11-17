@@ -49,14 +49,25 @@ class CourseListActivity : AppCompatActivity() {
             row.layoutParams = params
             name.text = course.courseName
             name.setOnClickListener {
-                matchStudentTutor(studentUser, course)
-                intent.setClass(this, StudentActivity::class.java)
-                startActivity(intent)
+                createMatchForCourse(studentUser, course)
             }
             row.addView(name, 0)
             courseListTable.addView(row)
         }
     }
 
+    /**
+     * This is the function called when the button for a specific course is clicked
+     *
+     * Calls the matchStudentTutor function from GetHelpController to create a tutor session
+     * and returns the sutdent back to the student home page
+     *
+     * @return void
+     */
+    fun createMatchForCourse(studentUser: StudentUser, course: Course){
+        matchStudentTutor(studentUser, course)
+        intent.setClass(this, StudentActivity::class.java)
+        startActivity(intent)
+    }
 
 }

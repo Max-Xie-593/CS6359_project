@@ -39,6 +39,6 @@ class TutorStateContext {
      * @return Boolean
      */
     fun getHelp(tutorUser: TutorUser?, studentUser: StudentUser, course: Course) : Boolean{
-        return tutorState.getHelp(tutorUser, studentUser, course);
+        return tutorState.getHelp(tutorUser, studentUser, course)
     }
 }

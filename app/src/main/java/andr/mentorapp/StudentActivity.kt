@@ -85,9 +85,7 @@ class StudentActivity : AppCompatActivity() {
 
 
         studentGetHelpButton.setOnClickListener {
-            intent.setClass(this, CourseListActivity::class.java)
-            intent.putExtra("studentId", thisStudentID)
-            startActivity(intent)
+            selectCourse()
         }
 
         studentDone.setOnClickListener {
@@ -97,6 +95,22 @@ class StudentActivity : AppCompatActivity() {
         studentLeaveQueue.setOnClickListener {
             this.leaveFromQueue(studentUser);
         }
+
+    }
+
+
+    /**
+     * This is the function called when the "Get Help" button is clicked
+     *
+     * starts the CourseListActivity class to show the list of courses the student can select
+     *
+     * @return void
+     */
+    fun selectCourse() {
+
+        intent.setClass(this, CourseListActivity::class.java)
+        intent.putExtra("studentId", thisStudentID)
+        startActivity(intent)
 
     }
 
@@ -118,12 +132,9 @@ class StudentActivity : AppCompatActivity() {
             studentGetHelpButton.setVisibility(View.VISIBLE)
             studentMessage.setText("Welcome to the Student page " + studentUser.userName + "!")
         }
-        else
-        {
+        else {
             studentMessage.setText("Sorry, error in leaving queue")
         }
-
-
     }
 
 

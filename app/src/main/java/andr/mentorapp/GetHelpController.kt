@@ -87,7 +87,7 @@ object GetHelpController{
         var course = courseGiven
         val expertTutors = availableExpertCourses.get(course.courseId)
         val tutor : TutorUser?
-        var tutorStateContext : TutorStateContext = TutorStateContext()
+        var tutorStateContext = TutorStateContext()
 
         if (expertTutors.isNullOrEmpty()) {
             tutor = firstAvailableTutor()
@@ -106,7 +106,7 @@ object GetHelpController{
                 tutorStateContext.setState(ExpertCheckedInAndAvailState())
         }
 
-        return tutorStateContext.getHelp(tutor, student, course);
+        return tutorStateContext.getHelp(tutor, student, course)
     }
 
     /**
@@ -138,7 +138,7 @@ object GetHelpController{
             for (waitingStudent in studentQueue) {
                 if (waitingStudent.second.courseId == "other" || availableExpertCourses.get(waitingStudent.second.courseId)!!.contains(tutor.userId)) {
                     tutorSessions.add(Triple(tutor, waitingStudent.first, waitingStudent.second))
-                    studentQueue.remove(waitingStudent);
+                    studentQueue.remove(waitingStudent)
                     for (availTutor in availableTutors){
                         if(availTutor.userId == tutor.userId){
                             availableTutors.remove(availTutor)
