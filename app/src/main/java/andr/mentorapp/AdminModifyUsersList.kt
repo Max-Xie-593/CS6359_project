@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.activity_admin_modify_users_list.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import android.app.Activity
+import android.view.View
 
 const val GET_NEW_USER_RESULT : Int = 0
 const val UPDATE_USER_RESULT: Int = 1
@@ -28,6 +29,7 @@ class AdminModifyUsersList : AppCompatActivity() {
 
     /**
      *  creates the admin list screen
+     *
      *  @param savedInstanceState data most recently provided
      */
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,7 +46,23 @@ class AdminModifyUsersList : AppCompatActivity() {
             startActivityForResult(intent,GET_NEW_USER_RESULT)
         }
 
+        undo_button.setVisibility(View.GONE)
+        undo_button.setOnClickListener {
+            undo_button.setVisibility(View.GONE)
+            DatabaseManager.restoreLastUser()
+            recreate()
+        }
+
+
         this.displayList()
+    }
+
+    /**
+     * Delete leftover memento when page is destroyed
+     */
+    override fun onDestroy() {
+        super.onDestroy()
+        DatabaseManager.clearHistory()
     }
 
     /**
@@ -85,6 +103,7 @@ class AdminModifyUsersList : AppCompatActivity() {
             deleteButton.text = "DELETE"
             deleteButton.setOnClickListener {
                 DatabaseManager.deleteUser(user) // delete the user from the database
+                undo_button.setVisibility(View.VISIBLE)
                 recreate() // update the screen
             }
             row.addView(deleteButton,2)

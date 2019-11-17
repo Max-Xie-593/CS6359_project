@@ -15,6 +15,7 @@ class DatabaseManager {
         private var scheduleDao : TutorScheduleDao? = null
         private var courseDao : CourseDao? = null
         private var tutorCourseJoinDao : TutorCourseJoinDao? = null
+        private var memento : Memento = Memento()
 
         /**
          * Initialize DatabaseManager singleton
@@ -100,7 +101,40 @@ class DatabaseManager {
          * @param user     User to delete from db
          */
         fun deleteUser(user: User) {
-            userDao!!.delete(user)
+            if (userDao!!.findUserByIdFromdDB(user.userId) != null) {
+                if (user.userLevel == TUTOR_LEVEL) {
+                    memento.save(
+                        user,
+                        getCoursesByTutorId(user.userId),
+                        getSchedulesByTutorId(user.userId)
+                    )
+                }
+                else {
+                    memento.save(user)
+                }
+
+                userDao!!.delete(user)
+            }
+        }
+
+        /**
+         * Restore the memento containing the most recently deleted user
+         */
+        fun restoreLastUser() {
+            val (restoredUser, restoredAssociatedUserCourses, restoredSchedules) = memento.restore()
+
+            insertUser(restoredUser)
+
+            if (restoredUser.userLevel == TUTOR_LEVEL) {
+                for (course in restoredAssociatedUserCourses!!) {
+                    insertTutorCourseJoin(restoredUser.userId, course.courseId)
+                }
+
+                for (schedule in restoredSchedules!!) {
+                    insertTutorSchedule(restoredUser.userId, schedule)
+                }
+
+            }
         }
 
         /**
@@ -128,10 +162,9 @@ class DatabaseManager {
          * @param schedule     Schedule to add for tutor
          */
         fun insertTutorSchedule(tutorId: String, schedule: Schedule) {
-            var user = userDao!!.findUserByIdFromdDB(tutorId)
-            if (user != null) {
-                var tutorSchedule = TutorSchedule(tutorId, schedule)
-                scheduleDao!!.insert(tutorSchedule)            }
+            if (userDao!!.findUserByIdFromdDB(tutorId) != null) {
+                scheduleDao!!.insert(TutorSchedule(tutorId, schedule))
+            }
         }
 
         /**
@@ -247,8 +280,7 @@ class DatabaseManager {
          * @param schedule     TutorSchedule to delete from db
          */
         fun deleteTutorSchedule(tutorId: String, schedule: Schedule) {
-            var tutorSchedule = TutorSchedule(tutorId, schedule)
-            scheduleDao!!.delete(tutorSchedule)
+            scheduleDao!!.delete(TutorSchedule(tutorId, schedule))
         }
 
         /**
@@ -257,9 +289,14 @@ class DatabaseManager {
          * @param schedule     TutorSchedule to delete from db
          */
         fun deleteTutorSchedule(tutorId: String, day: String, start: String, end: String) {
-            val schedule = scheduleDao!!.getSchedule(tutorId, day, start, end)
-            scheduleDao!!.delete(schedule)
+            scheduleDao!!.delete(scheduleDao!!.getSchedule(tutorId, day, start, end))
+        }
 
+        /**
+         * Clears the history of any saved user information.
+         */
+        fun clearHistory() {
+            memento.clear()
         }
     }
 }

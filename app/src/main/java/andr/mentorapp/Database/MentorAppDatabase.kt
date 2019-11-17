@@ -78,6 +78,7 @@ abstract class MentorAppDatabase : RoomDatabase(){
 
                     // insert initial data into the database
                     db.execSQL("insert into user values ('nymisha', 'Nymisha', $ADMIN_LEVEL)")
+                    db.execSQL("insert into user values ('pratik', 'Pratik', $ADMIN_LEVEL)")
                     db.execSQL("insert into user values ('mugdha', 'Mugdha', $STUDENT_LEVEL)")
                     db.execSQL("insert into user values ('courtney', 'Courtney', $TUTOR_LEVEL)")
                     db.execSQL("insert into user values ('mila', 'Mila', $TUTOR_LEVEL)")

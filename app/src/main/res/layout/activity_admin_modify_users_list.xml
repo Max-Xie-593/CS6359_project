@@ -17,6 +17,12 @@
             android:layout_height="wrap_content"
             android:text="Add" />
 
+    <Button
+            android:id="@+id/undo_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Undo" />
+
     <TableLayout
             android:id="@+id/listTable"
             android:layout_width="match_parent"

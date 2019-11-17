@@ -2,6 +2,7 @@ package andr.mentorapp
 
 import andr.mentorapp.Database.*
 import android.content.Context
+import androidx.room.Database
 import androidx.test.core.app.ApplicationProvider
 import org.junit.After
 import org.junit.Assert
@@ -12,6 +13,7 @@ import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
 class DatabaseManagerTest {
+
     // Before test: setup database
     @Before
     fun setup() {
@@ -226,10 +228,100 @@ class DatabaseManagerTest {
     fun deleteTest() {
         var student = StudentUser("stu", "stu")
         DatabaseManager.insertUser(student)
-        Assert.assertEquals(DatabaseManager.getUserById("stu")!!.userId, "stu")
+        Assert.assertEquals(DatabaseManager.getUserById("stu").userId, "stu")
 
         DatabaseManager.deleteUser(student)
         Assert.assertEquals(DatabaseManager.getAllUsers().size, 0)
+    }
+
+    // Test: restore successfully restores only the last non-tutor user from db
+    @Test
+    fun restoreOnlyLastNonTutorTest() {
+        val student1 = StudentUser("stu1", "stu1")
+        DatabaseManager.insertUser(student1)
+        Assert.assertEquals(DatabaseManager.getAllUsers().size, 1)
+
+        val student2 = StudentUser("stu2", "stu2")
+        DatabaseManager.insertUser(student2)
+        Assert.assertEquals(DatabaseManager.getAllUsers().size, 2)
+
+        DatabaseManager.deleteUser(student1)
+        Assert.assertEquals(DatabaseManager.getAllUsers().size, 1)
+
+        DatabaseManager.deleteUser(student2)
+        Assert.assertEquals(DatabaseManager.getAllUsers().size, 0)
+
+        DatabaseManager.restoreLastUser()
+        Assert.assertEquals(DatabaseManager.getAllUsers().size, 1)
+        Assert.assertEquals(DatabaseManager.getUserById("stu2").userId, student2.userId)
+    }
+
+    // Test: restore successfully restores only the last non-tutor user from db
+    @Test
+    fun restoreOnlyLastTutorTest() {
+        val tutor1 = TutorUser("tut1", "tut1")
+        val tutor1Courses : List<Course> = listOf(
+            Course(courseId = "cs6359", courseName = "OOAD"),
+            Course(courseId = "cs6363", courseName = "Algs")
+        )
+        val tutor1Schedules: List<Schedule> = listOf(
+            Schedule("Monday", "13:00", "14:15"),
+            Schedule("Wednesday", "13:00", "14:15")
+        )
+
+        DatabaseManager.insertUser(tutor1)
+        Assert.assertEquals(DatabaseManager.getAllUsers().size, 1)
+        for (course in tutor1Courses) {
+            addCourse(course.courseId, course.courseName)
+            addTutorCourseJoin(tutor1.userId, course.courseId)
+        }
+        Assert.assertEquals(DatabaseManager.getCoursesByTutorId(tutor1.userId).size, 2)
+
+        for (schedule in tutor1Schedules) {
+            addSchedule(id = tutor1.userId, day = schedule.day, start = schedule.shiftStart, end = schedule.shiftEnd)
+        }
+        Assert.assertEquals(DatabaseManager.getSchedulesByTutorId(tutor1.userId).size, 2)
+
+
+        val tutor2 = TutorUser("tut2", "tut2")
+        val tutor2Courses : List<Course> = listOf(
+            Course(courseId = "cs6359", courseName = "OOAD"),
+            Course(courseId = "cs6363", courseName = "Algs")
+        )
+        val tutor2Schedules: List<Schedule> = listOf(
+            Schedule("Monday", "13:00", "14:15"),
+            Schedule("Wednesday", "13:00", "14:15")
+        )
+
+        DatabaseManager.insertUser(tutor2)
+        Assert.assertEquals(DatabaseManager.getAllUsers().size, 2)
+        for (course in tutor2Courses) {
+            addCourse(course.courseId, course.courseName)
+            addTutorCourseJoin(tutor2.userId, course.courseId)
+        }
+        Assert.assertEquals(DatabaseManager.getCoursesByTutorId(tutor2.userId).size, 2)
+        for (schedule in tutor2Schedules) {
+            addSchedule(id = tutor2.userId, day = schedule.day, start = schedule.shiftStart, end = schedule.shiftEnd)
+        }
+        Assert.assertEquals(DatabaseManager.getSchedulesByTutorId(tutor2.userId).size, 2)
+
+
+        DatabaseManager.deleteUser(tutor1)
+        Assert.assertEquals(DatabaseManager.getAllUsers().size, 1)
+        Assert.assertEquals(DatabaseManager.getCoursesByTutorId(tutor1.userId).size, 0)
+        Assert.assertEquals(DatabaseManager.getSchedulesByTutorId(tutor1.userId).size, 0)
+
+        DatabaseManager.deleteUser(tutor2)
+        Assert.assertEquals(DatabaseManager.getAllUsers().size, 0)
+        Assert.assertEquals(DatabaseManager.getCoursesByTutorId(tutor2.userId).size, 0)
+        Assert.assertEquals(DatabaseManager.getSchedulesByTutorId(tutor2.userId).size, 0)
+
+        DatabaseManager.restoreLastUser()
+        Assert.assertEquals(DatabaseManager.getAllUsers().size, 1)
+        Assert.assertEquals(DatabaseManager.getUserById("tut2").userId, tutor2.userId)
+        Assert.assertEquals(DatabaseManager.getUserById("tut2").userLevel, TUTOR_LEVEL)
+        Assert.assertEquals(DatabaseManager.getCoursesByTutorId(tutor2.userId).size, 2)
+        Assert.assertEquals(DatabaseManager.getSchedulesByTutorId(tutor2.userId).size, 2)
     }
 
     // Test: update user in db successfully
@@ -237,10 +329,10 @@ class DatabaseManagerTest {
     fun updateTest() {
         var student = StudentUser("stu", "stu2")
         DatabaseManager.insertUser(student)
-        Assert.assertEquals(DatabaseManager.getUserById("stu")!!.userName, "stu2")
+        Assert.assertEquals(DatabaseManager.getUserById("stu").userName, "stu2")
 
         DatabaseManager.updateUser("stu", "newName")
-        Assert.assertEquals(DatabaseManager.getUserById("stu")!!.userName, "newName")
+        Assert.assertEquals(DatabaseManager.getUserById("stu").userName, "newName")
     }
 
     // Test: should return all Tutor Schedules in the database; list length of 0

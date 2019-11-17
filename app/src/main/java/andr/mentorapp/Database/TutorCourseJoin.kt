@@ -17,10 +17,14 @@ import androidx.room.ForeignKey
     foreignKeys = arrayOf(
         ForeignKey(entity = User::class,
             parentColumns = arrayOf("userId"),
-            childColumns = arrayOf("tutorId")),
+            childColumns = arrayOf("tutorId"),
+            onDelete = ForeignKey.CASCADE
+        ),
         ForeignKey(entity = Course::class,
             parentColumns = arrayOf("courseId"),
-            childColumns = arrayOf("courseId"))
+            childColumns = arrayOf("courseId"),
+            onDelete = ForeignKey.CASCADE
+        )
     )
 )
 data class TutorCourseJoin(

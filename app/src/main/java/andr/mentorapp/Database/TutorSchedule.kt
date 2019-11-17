@@ -16,7 +16,10 @@ import androidx.room.ForeignKey
     foreignKeys = [
         ForeignKey(entity = User::class,
             parentColumns = arrayOf("userId"),
-            childColumns = arrayOf("tutorId"))]
+            childColumns = arrayOf("tutorId"),
+            onDelete = ForeignKey.CASCADE
+        )
+    ]
 )
 data class TutorSchedule(
     var tutorId : String, // ID of the Tutor
