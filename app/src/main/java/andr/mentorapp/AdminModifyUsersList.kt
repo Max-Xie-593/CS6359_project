@@ -91,10 +91,7 @@ class AdminModifyUsersList : AppCompatActivity() {
                 intent = user.setIntent(this,EditUserActivity::class.java)
                 intent.putExtra("id", user.userId)
                 intent.putExtra("level", if (TUTOR_LEVEL == database_level) TUTOR_LEVEL else ADMIN_LEVEL)
-               // if (database_level == TUTOR_LEVEL)
-               //     intent.putExtra("level", TUTOR_LEVEL)
-               // else
-               //     intent.putExtra("level", ADMIN_LEVEL)
+
                 startActivityForResult(intent,UPDATE_USER_RESULT)
             }
             row.addView(editButton,1)
@@ -137,10 +134,7 @@ class AdminModifyUsersList : AppCompatActivity() {
             }
 
         }
-        else if (requestCode == UPDATE_USER_RESULT && resultCode == Activity.RESULT_OK && data != null) { // from the Edit Button
-            // TODO: implement this code section
-            // db.update(data.getStringExtra("id"), data.getStringExtra("name"))
-        }
+
         recreate()
     }
 }
