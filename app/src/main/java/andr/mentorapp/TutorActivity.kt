@@ -21,9 +21,6 @@ import kotlinx.android.synthetic.main.activity_tutor.*
  */
 class TutorActivity : AppCompatActivity() {
 
-    lateinit var thisTutorID : String
-    lateinit var tutorUser : TutorUser
-
     /**
      *  creates the tutor home page screen
      *
@@ -38,9 +35,9 @@ class TutorActivity : AppCompatActivity() {
             addFragment(activity_tutor_parent.id, SignOutFragment.newInstance())
         }
 
-        thisTutorID = intent.getStringExtra("id")
+        var thisTutorID = intent.getStringExtra("id")
 
-        tutorUser = DatabaseManager.getUserById(thisTutorID) as TutorUser
+        var tutorUser = DatabaseManager.getUserById(thisTutorID) as TutorUser
 
         check_in_button.setVisibility(View.VISIBLE)
         check_out_button.setVisibility(View.GONE)

@@ -21,10 +21,6 @@ import android.view.View
 
 class StudentActivity : AppCompatActivity() {
 
-
-    lateinit var thisStudentID: String
-    lateinit var studentUser: StudentUser
-
     /**
      * On start of the student screen, the student can be in 3 states:
      * 1. Signed in
@@ -50,42 +46,42 @@ class StudentActivity : AppCompatActivity() {
             addFragment(activity_student_parent.id, SignOutFragment.newInstance())
         }
 
-        thisStudentID = intent.getStringExtra("id")
+        var thisStudentID = intent.getStringExtra("id")
 
         if (checkedInTutors.isEmpty()) {
             studentMessage.setText("The CSMC is closed (no checked in tutors), please come back when we are open again")
-        } else {
+            return
+        }
 
-            studentMessage.setText("Welcome to the Student page " + intent.getStringExtra("name") + "!")
-            studentGetHelpButton.setVisibility(View.VISIBLE)
+        studentMessage.setText("Welcome to the Student page " + intent.getStringExtra("name") + "!")
+        studentGetHelpButton.setVisibility(View.VISIBLE)
 
-            studentUser = DatabaseManager.getUserById(thisStudentID) as StudentUser
-            for (session in tutorSessions) {
+        var studentUser = DatabaseManager.getUserById(thisStudentID) as StudentUser
+        for (session in tutorSessions) {
 
-                if (session.second.userId == studentUser.userId) {
-                    studentMessage.setText("You're getting help from " + session.first.userName + " in " + session.third.courseName)
-                    studentGetHelpButton.setVisibility(View.GONE)
-                    studentDone.setVisibility(View.VISIBLE)
-                    break
-                }
+            if (session.second.userId == studentUser.userId) {
+                studentMessage.setText("You're getting help from " + session.first.userName + " in " + session.third.courseName)
+                studentGetHelpButton.setVisibility(View.GONE)
+                studentDone.setVisibility(View.VISIBLE)
+                break
             }
-            var queuePosition = 1
-            for (waitingStudent in studentQueue) {
-                if (waitingStudent.first.userId == studentUser.userId) {
-                    studentMessage.setText("You're in the queue to be helped, position " + queuePosition + " for " + waitingStudent.second.courseName)
-                    studentGetHelpButton.setVisibility(View.GONE)
-                    studentLeaveQueue.setVisibility(View.VISIBLE)
-                    break
-                } else {
-                    queuePosition++
-                }
-
+        }
+        var queuePosition = 1
+        for (waitingStudent in studentQueue) {
+            if (waitingStudent.first.userId == studentUser.userId) {
+                studentMessage.setText("You're in the queue to be helped, position " + queuePosition + " for " + waitingStudent.second.courseName)
+                studentGetHelpButton.setVisibility(View.GONE)
+                studentLeaveQueue.setVisibility(View.VISIBLE)
+                break
+            } else {
+                queuePosition++
             }
+
         }
 
 
         studentGetHelpButton.setOnClickListener {
-            selectCourse()
+            selectCourse(thisStudentID)
         }
 
         studentDone.setOnClickListener {
@@ -106,10 +102,10 @@ class StudentActivity : AppCompatActivity() {
      *
      * @return void
      */
-    fun selectCourse() {
+    fun selectCourse(studentId: String) {
 
         intent.setClass(this, CourseListActivity::class.java)
-        intent.putExtra("studentId", thisStudentID)
+        intent.putExtra("studentId", studentId)
         startActivity(intent)
 
     }

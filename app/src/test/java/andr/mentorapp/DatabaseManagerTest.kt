@@ -2,7 +2,6 @@ package andr.mentorapp
 
 import andr.mentorapp.Database.*
 import android.content.Context
-import androidx.room.Database
 import androidx.test.core.app.ApplicationProvider
 import org.junit.After
 import org.junit.Assert
@@ -517,7 +516,7 @@ class DatabaseManagerTest {
     fun deleteCourseTest() {
         val course = Course("cs6359","OOAD")
         DatabaseManager.insertCourse(course)
-        Assert.assertEquals(DatabaseManager.getCoursebyId("cs6359").courseId,"cs6359")
+        Assert.assertEquals(DatabaseManager.getCourseById("cs6359").courseId,"cs6359")
 
         DatabaseManager.deleteCourse(course)
         Assert.assertEquals(DatabaseManager.getAllCourses().size,0)
@@ -568,13 +567,12 @@ class DatabaseManagerTest {
     fun deleteTutorCourseJoin() {
         addTutor("tu","tu")
         addCourse("cs6359","OOAD")
-        val tutorCourseJoinHold = TutorCourseJoin("tu","cs6359")
 
         DatabaseManager.insertTutorCourseJoin("tu", "cs6359")
         Assert.assertEquals(DatabaseManager.getCoursefromTutorCourseJoin("tu","cs6359").tutorId,"tu")
         Assert.assertEquals(DatabaseManager.getCoursefromTutorCourseJoin("tu","cs6359").courseId,"cs6359")
 
-        DatabaseManager.deleteTutorCourseJoin(tutorCourseJoinHold)
+        DatabaseManager.deleteTutorCourseJoin("tu", "cs6359")
         Assert.assertEquals(DatabaseManager.getAllTutorCourseJoins().size,0)
     }
 

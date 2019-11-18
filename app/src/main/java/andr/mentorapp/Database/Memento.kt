@@ -1,9 +1,7 @@
 package andr.mentorapp.Database
 
-import andr.mentorapp.TutorSchedule
 import andr.mentorapp.User
 import andr.mentorapp.Course
-import android.util.Log
 
 /**
  * This class acts as the "history" of the most recently deleted User from the Database.
@@ -45,12 +43,12 @@ class Memento {
      */
     fun restore() : RestoredMemento {
         val tempUser = savedUser!!
-        val tempCoures = savedTutorCourses
+        val tempCourses = savedTutorCourses
         val tempSchedules = savedTutorSchedules
 
         clear()
 
-        return RestoredMemento(tempUser, tempCoures, tempSchedules)
+        return RestoredMemento(tempUser, tempCourses, tempSchedules)
 
     }
 

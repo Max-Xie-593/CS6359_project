@@ -11,10 +11,10 @@ import android.content.Context
  */
 class DatabaseManager {
     companion object {
-        private var userDao : UserDao? = null
-        private var scheduleDao : TutorScheduleDao? = null
-        private var courseDao : CourseDao? = null
-        private var tutorCourseJoinDao : TutorCourseJoinDao? = null
+        private lateinit var userDao : UserDao
+        private lateinit var scheduleDao : TutorScheduleDao
+        private lateinit var courseDao : CourseDao
+        private lateinit var tutorCourseJoinDao : TutorCourseJoinDao
         private var memento : Memento = Memento()
 
         /**
@@ -37,7 +37,7 @@ class DatabaseManager {
          * @return User     retrieved from db
          */
         fun getUserById(id: String) : User {
-            return userDao!!.findUserById(id)
+            return userDao.findUserById(id)
         }
 
         /**
@@ -46,7 +46,7 @@ class DatabaseManager {
          * @return List<User>     all users retrieved from db
          */
         fun getAllUsers() : List<User> {
-            return userDao!!.getAll()
+            return userDao.getAll()
         }
 
         /**
@@ -55,7 +55,7 @@ class DatabaseManager {
          * @return List<User>     all tutors retrieved from db
          */
         fun getAllTutors() : List<User> {
-            return userDao!!.getUsersByLevel(TUTOR_LEVEL)
+            return userDao.getUsersByLevel(TUTOR_LEVEL)
         }
 
         /**
@@ -64,7 +64,7 @@ class DatabaseManager {
          * @return List<User>     all admins retrieved from db
          */
         fun getAllAdmins() : List<User> {
-            return userDao!!.getUsersByLevel(ADMIN_LEVEL)
+            return userDao.getUsersByLevel(ADMIN_LEVEL)
         }
 
         /**
@@ -73,7 +73,7 @@ class DatabaseManager {
          * @return List<User>     all students retrieved from db
          */
         fun getAllStudents() : List<User> {
-            return userDao!!.getUsersByLevel(STUDENT_LEVEL)
+            return userDao.getUsersByLevel(STUDENT_LEVEL)
         }
 
         /**
@@ -82,7 +82,7 @@ class DatabaseManager {
          * @param user     User to add to db
          */
         fun insertUser(user: User) {
-            userDao!!.insert(user)
+            userDao.insert(user)
         }
 
         /**
@@ -92,7 +92,7 @@ class DatabaseManager {
          * @param name   String of new name for user
          */
         fun updateUser(id: String, name: String) {
-            userDao!!.update(id, name)
+            userDao.update(id, name)
         }
 
         /**
@@ -101,7 +101,7 @@ class DatabaseManager {
          * @param user     User to delete from db
          */
         fun deleteUser(user: User) {
-            if (userDao!!.findUserByIdFromdDB(user.userId) != null) {
+            if (userDao.findUserByIdFromdDB(user.userId) != null) {
                 if (user.userLevel == TUTOR_LEVEL) {
                     memento.save(
                         user,
@@ -113,7 +113,7 @@ class DatabaseManager {
                     memento.save(user)
                 }
 
-                userDao!!.delete(user)
+                userDao.delete(user)
             }
         }
 
@@ -143,7 +143,7 @@ class DatabaseManager {
          * @return List<TutorSchedule> all schedules retrieved from db
          */
         fun getAllTutorSchedules() : List<TutorSchedule> {
-            return scheduleDao!!.getAll()
+            return scheduleDao.getAll()
         }
 
         /**
@@ -152,7 +152,7 @@ class DatabaseManager {
          * @return List<Schedule>     all schedules for user retrieved from db
          */
         fun getSchedulesByTutorId(id: String) : List<Schedule> {
-            return scheduleDao!!.findTutorSchedulesByIdFromdDB(id)
+            return scheduleDao.findTutorSchedulesByIdFromdDB(id)
         }
 
         /**
@@ -162,8 +162,8 @@ class DatabaseManager {
          * @param schedule     Schedule to add for tutor
          */
         fun insertTutorSchedule(tutorId: String, schedule: Schedule) {
-            if (userDao!!.findUserByIdFromdDB(tutorId) != null) {
-                scheduleDao!!.insert(TutorSchedule(tutorId, schedule))
+            if (userDao.findUserByIdFromdDB(tutorId) != null) {
+                scheduleDao.insert(TutorSchedule(tutorId, schedule))
             }
         }
 
@@ -173,7 +173,7 @@ class DatabaseManager {
          * @return List<TutorCoursesJoin> List of all the TutorCourses
          */
         fun getAllTutorCourseJoins() : List<TutorCourseJoin> {
-            return tutorCourseJoinDao!!.getAll()
+            return tutorCourseJoinDao.getAll()
         }
 
         /**
@@ -182,7 +182,7 @@ class DatabaseManager {
          * @return List<Course>     all courses for tutoruser retrieved from db
          */
         fun getCoursesByTutorId(tutorId: String) : List<Course> {
-            return tutorCourseJoinDao!!.getCoursesForTutor(tutorId)
+            return tutorCourseJoinDao.getCoursesForTutor(tutorId)
         }
 
 
@@ -192,7 +192,7 @@ class DatabaseManager {
          * @return List<TutorUser>     all tutors for course retrieved from db
          */
         fun getTutorsbyCourseId(courseId: String) : List<TutorUser> {
-            return tutorCourseJoinDao!!.getTutorsForCourse(courseId)
+            return tutorCourseJoinDao.getTutorsForCourse(courseId)
         }
 
       
@@ -205,7 +205,7 @@ class DatabaseManager {
          * @return TutorCourseJoin Object that contains both tutorId and courseId
          */
         fun getCoursefromTutorCourseJoin(tutorId: String,courseId: String) : TutorCourseJoin {
-            return tutorCourseJoinDao!!.findTutorCoursesByIdFromDB(tutorId, courseId)
+            return tutorCourseJoinDao.findTutorCoursesByIdFromDB(tutorId, courseId)
         }
 
         /**
@@ -215,7 +215,7 @@ class DatabaseManager {
          * @param courseId id to use to create the tutorCourseJoin Object
          */
         fun insertTutorCourseJoin(tutorId: String,courseId: String) {
-            tutorCourseJoinDao!!.insert(TutorCourseJoin(tutorId,courseId))
+            tutorCourseJoinDao.insert(TutorCourseJoin(tutorId,courseId))
         }
 
         /**
@@ -223,8 +223,9 @@ class DatabaseManager {
          *
          * @param course TutorCourseJoin to remove from the database
          */
-        fun deleteTutorCourseJoin(course: TutorCourseJoin) {
-            tutorCourseJoinDao!!.delete(course)
+        fun deleteTutorCourseJoin(tutorId: String, courseId: String) {
+            var course = getCoursefromTutorCourseJoin(tutorId, courseId)
+            tutorCourseJoinDao.delete(course)
         }
 
         /**
@@ -233,17 +234,7 @@ class DatabaseManager {
          * @return List<Course> List of all the Courses
          */
         fun getAllCourses() : List<Course> {
-            return courseDao!!.getAll()
-        }
-
-        /**
-         * Return course by Id
-         *
-         * @param id        String to find course by
-         * @return Course     retrieved from db
-         */
-        fun getCourseById(id: String) : Course? {
-            return courseDao!!.findCourseByIdFromDB(id)
+            return courseDao.getAll()
         }
 
         /**
@@ -252,7 +243,7 @@ class DatabaseManager {
          * @param course course to insert into the Course Table
          */
         fun insertCourse(course: Course) {
-            courseDao!!.insert(course)
+            courseDao.insert(course)
         }
 
         /**
@@ -261,7 +252,7 @@ class DatabaseManager {
          * @param course Course to delete from the Course Table
          */
         fun deleteCourse(course: Course) {
-            courseDao!!.delete(course)
+            courseDao.delete(course)
         }
 
         /**
@@ -270,8 +261,8 @@ class DatabaseManager {
          * @param id    String id of course to find in Course Table
          * @return Course Object to return with the given id
          */
-        fun getCoursebyId(id: String): Course {
-            return courseDao!!.getCourseById(id)
+        fun getCourseById(id: String): Course {
+            return courseDao.getCourseById(id)
         }
 
         /** Delete TutorSchedule from db
@@ -280,7 +271,7 @@ class DatabaseManager {
          * @param schedule     TutorSchedule to delete from db
          */
         fun deleteTutorSchedule(tutorId: String, schedule: Schedule) {
-            scheduleDao!!.delete(TutorSchedule(tutorId, schedule))
+            scheduleDao.delete(TutorSchedule(tutorId, schedule))
         }
 
         /**
@@ -289,7 +280,7 @@ class DatabaseManager {
          * @param schedule     TutorSchedule to delete from db
          */
         fun deleteTutorSchedule(tutorId: String, day: String, start: String, end: String) {
-            scheduleDao!!.delete(scheduleDao!!.getSchedule(tutorId, day, start, end))
+            scheduleDao.delete(scheduleDao.getSchedule(tutorId, day, start, end))
         }
 
         /**

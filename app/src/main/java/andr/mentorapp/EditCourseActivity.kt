@@ -64,11 +64,10 @@ class EditCourseActivity : AppCompatActivity() {
             courseName.text = course.courseName // grab the name of the course
             row.addView(courseName,0)
 
-            //TODO: fix everything to use TutorCourseJoin instead of TutorCourses
             val deleteCourseButton = Button(context) // create the delete button to remove the course if needed
             deleteCourseButton.text = "DELETE"
             deleteCourseButton.setOnClickListener {
-                DatabaseManager.deleteTutorCourseJoin(DatabaseManager.getCoursefromTutorCourseJoin(intent.getStringExtra("tutorId"),course.courseId)) // delete the course from the database
+                DatabaseManager.deleteTutorCourseJoin(intent.getStringExtra("tutorId"),course.courseId) // delete the tutor-course pair from the database
                 recreate() // update the screen
             }
             row.addView(deleteCourseButton,1)
