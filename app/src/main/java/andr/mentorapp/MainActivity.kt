@@ -8,8 +8,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 const val TAG = "MainActivityDebugTag"
 const val ACTION_SIGN_OUT = "andr.mentorapp.SIGNOUT"
@@ -35,18 +33,15 @@ class MainActivity : AppCompatActivity() {
 
         sign_in_button.setOnClickListener {
             val context = this
-            GlobalScope.launch {
-                val id = unique_id_input.text.toString()
-                val user = DatabaseManager.getUserById(id)
+            val id = unique_id_input.text.toString()
+            val user = DatabaseManager.getUserById(id)
 
-                intent = user.getIntent(context)
+            intent = user.getIntent(context)
 
-                if(user.userLevel == USER_DOES_NOT_EXIST)
-                    startActivityForResult(intent, GET_NEW_USER_NAME_RESULT)
-                else
-                    startActivity(intent)
-
-            }
+            if(user.userLevel == USER_DOES_NOT_EXIST)
+                startActivityForResult(intent, GET_NEW_USER_NAME_RESULT)
+            else
+                startActivity(intent)
         }
     }
 

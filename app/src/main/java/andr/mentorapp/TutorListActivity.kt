@@ -6,8 +6,6 @@ import android.widget.Button
 import android.widget.TableRow
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_tutor_list.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 /**
  * This class handles the page listing the Tutors in the system

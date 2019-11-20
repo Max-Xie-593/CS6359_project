@@ -9,8 +9,6 @@ import android.widget.TextView
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_edit_courses.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 const val GET_NEW_COURSE_RESULT : Int = 3
 
@@ -91,10 +89,7 @@ class EditCourseActivity : AppCompatActivity() {
      */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if(requestCode == GET_NEW_COURSE_RESULT && resultCode == Activity.RESULT_OK && data != null) {
-            GlobalScope.launch {
-                DatabaseManager.insertTutorCourseJoin(data.getStringExtra("tutorId"),data.getStringExtra("courseId"))
-            }
-            recreate()
+            DatabaseManager.insertTutorCourseJoin(data.getStringExtra("tutorId"),data.getStringExtra("courseId"))
             recreate()
         }
     }

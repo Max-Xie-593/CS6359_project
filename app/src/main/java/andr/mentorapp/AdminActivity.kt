@@ -1,6 +1,7 @@
 package andr.mentorapp
 
 import andr.mentorapp.Database.ADMIN_LEVEL
+import andr.mentorapp.Database.DatabaseManager
 import andr.mentorapp.Database.TUTOR_LEVEL
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -51,5 +52,10 @@ class AdminActivity : AppCompatActivity() {
             var vsIntent = ViewScheduleIntent(AdminViewScheduleStrategy())
             startActivity(vsIntent.generateIntent(this, intent))
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        adminMessage.text = "Welcome to the Admin page " + DatabaseManager.getUserById(intent.getStringExtra("id")).userName + "!"
     }
 }

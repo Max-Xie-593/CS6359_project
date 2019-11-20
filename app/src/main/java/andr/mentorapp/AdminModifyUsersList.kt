@@ -8,8 +8,6 @@ import android.widget.TableRow
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_admin_modify_users_list.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import android.app.Activity
 import android.view.View
 
@@ -123,18 +121,19 @@ class AdminModifyUsersList : AppCompatActivity() {
      *  @param data information received from the finished execution of [startActivityForResult]
      */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if(requestCode == GET_NEW_USER_RESULT && resultCode == Activity.RESULT_OK && data != null){ // from the Add Button
+        if(requestCode == GET_NEW_USER_RESULT && data != null){ // from the Add Button
             when (database_level) {
-                TUTOR_LEVEL -> GlobalScope.launch {
+                TUTOR_LEVEL -> {
                     DatabaseManager.insertUser(TutorUser(data.getStringExtra("id"), data.getStringExtra("name")))
                 }
-                ADMIN_LEVEL -> GlobalScope.launch {
+                ADMIN_LEVEL -> {
                     DatabaseManager.insertUser(AdminUser(data.getStringExtra("id"), data.getStringExtra("name")))
                 }
             }
-
         }
 
-        recreate()
+        if (resultCode == Activity.RESULT_OK) {
+            recreate()
+        }
     }
 }
